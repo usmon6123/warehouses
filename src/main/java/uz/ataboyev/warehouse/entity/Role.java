@@ -5,9 +5,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import uz.ataboyev.warehouse.entity.template.AbsLongEntity;
+import uz.ataboyev.warehouse.enums.RoleType;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
@@ -22,6 +22,8 @@ public class Role extends AbsLongEntity {
     @Column(columnDefinition = "text")
     private String description;
 
-//    @Enumerated(EnumType.STRING)
-//    private Set<PermissionEnum> permissions;
+    @JoinColumn(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private RoleType roleType=RoleType.USER;
+
 }

@@ -12,7 +12,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@Entity(name = "orders")
 public class Order extends AbsLongEntity {
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)

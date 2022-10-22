@@ -16,7 +16,7 @@ public class OrderItem extends AbsLongEntity {
 
    @JoinColumn(name = "order_id")
    @ManyToOne(fetch = FetchType.LAZY,optional = false)
-   private Order order;
+   private Order order_id;
 
    @ManyToOne(fetch = FetchType.LAZY,optional = false)
    private Product product;

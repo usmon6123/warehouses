@@ -32,10 +32,10 @@ public class User extends AbsUUIDEntity implements UserDetails {
     @ManyToOne()
     private Role role;
 
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    @OneToOne(mappedBy = "user")
-    @JoinColumn(name = "role_permission_from_user")
-    private RolePermissionFromUser rolePermissionFromUser;
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @OneToOne(mappedBy = "user")
+//    @JoinColumn(name = "role_permission_from_user")
+//    private RolePermission rolePermission;
 
 
     private boolean accountNonExpired = true;
@@ -46,10 +46,11 @@ public class User extends AbsUUIDEntity implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //AGAR USERNING PERMISSIONLARI BO'LMASA BO'SH LIST QAYTARAMIZ
-        if (rolePermissionFromUser.getPermissions().isEmpty()) return new ArrayList<>();
-
-        return rolePermissionFromUser.getPermissions().stream().map(permissionEnum -> new SimpleGrantedAuthority(permissionEnum.getNameEnum().name()))
-                .collect(Collectors.toSet());
+//        if (rolePermission.getPermissions().isEmpty()) return new ArrayList<>();
+//
+//        return rolePermission.getPermissions().stream().map(permissionEnum -> new SimpleGrantedAuthority(permissionEnum.getNameEnum().name()))
+//                .collect(Collectors.toSet());
+        return new ArrayList<>();
     }
 
 
@@ -81,11 +82,5 @@ public class User extends AbsUUIDEntity implements UserDetails {
         this.enabled = enabled;
     }
 
-    public User(String username, String password, Role role, uz.ataboyev.warehouse.entity.RolePermissionFromUser rolePermissionFromUser, boolean enabled) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
-        this.rolePermissionFromUser = rolePermissionFromUser;
-        this.enabled = enabled;
-    }
+
 }
