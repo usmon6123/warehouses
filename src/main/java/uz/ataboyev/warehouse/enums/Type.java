@@ -2,9 +2,11 @@ package uz.ataboyev.warehouse.enums;
 
 public enum Type {
 
-    COSTUMER,
+    COSTUMER,//SOTUVCHI
 
-    CONSUMER,
+    CONSUMER,//ISTEMOLCHI, OLUVCHI, CLIENT
 
-    OTHER
+    OTHER, // BOSHQA
+
+    BOSS //HO'JAYIN
 }
