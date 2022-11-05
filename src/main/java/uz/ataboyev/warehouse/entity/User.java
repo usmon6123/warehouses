@@ -1,86 +1,86 @@
-package uz.ataboyev.warehouse.entity;
-
-import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import uz.ataboyev.warehouse.entity.template.AbsUUIDEntity;
-
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.stream.Collectors;
-
-@EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
-@NoArgsConstructor
-@Getter@Setter
-@Entity(name = "users")
-public class User extends AbsUUIDEntity implements UserDetails {
-
-    private String firstName;
-    private String lastName;
-
-    private String username; //unique bo'ladi telefon kiritsa ham bo'ladi
-    private String password;
-
-    @ManyToOne()
-    private Role role;
-
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    @OneToOne(mappedBy = "user")
-//    @JoinColumn(name = "role_permission_from_user")
-//    private RolePermission rolePermission;
-
-
-    private boolean accountNonExpired = true;
-    private boolean accountNonLocked = true;
-    private boolean credentialsNonExpired = true;
-    private boolean enabled;
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        //AGAR USERNING PERMISSIONLARI BO'LMASA BO'SH LIST QAYTARAMIZ
-//        if (rolePermission.getPermissions().isEmpty()) return new ArrayList<>();
+//package uz.ataboyev.warehouse.entity;
 //
-//        return rolePermission.getPermissions().stream().map(permissionEnum -> new SimpleGrantedAuthority(permissionEnum.getNameEnum().name()))
-//                .collect(Collectors.toSet());
-        return new ArrayList<>();
-    }
-
-
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return this.accountNonExpired;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return this.accountNonLocked;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return this.credentialsNonExpired;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return this.enabled;
-    }
-
-    public User(String username, String password, Role role, boolean enabled) {
-        this.username = username;
-        this.password = password;
-        this.role = role;
-        this.enabled = enabled;
-    }
-
-
-}
+//import lombok.*;
+//import org.hibernate.annotations.OnDelete;
+//import org.hibernate.annotations.OnDeleteAction;
+//import org.springframework.security.core.GrantedAuthority;
+//import org.springframework.security.core.authority.SimpleGrantedAuthority;
+//import org.springframework.security.core.userdetails.UserDetails;
+//import uz.ataboyev.warehouse.entity.template.AbsUUIDEntity;
+//
+//import javax.persistence.Entity;
+//import javax.persistence.JoinColumn;
+//import javax.persistence.ManyToOne;
+//import javax.persistence.OneToOne;
+//import java.util.ArrayList;
+//import java.util.Collection;
+//import java.util.stream.Collectors;
+//
+//@EqualsAndHashCode(callSuper = true)
+//@AllArgsConstructor
+//@NoArgsConstructor
+//@Getter@Setter
+//@Entity(name = "users")
+//public class User extends AbsUUIDEntity implements UserDetails {
+//
+//    private String firstName;
+//    private String lastName;
+//
+//    private String username; //unique bo'ladi telefon kiritsa ham bo'ladi
+//    private String password;
+//
+//    @ManyToOne()
+//    private Role role;
+//
+////    @OnDelete(action = OnDeleteAction.CASCADE)
+////    @OneToOne(mappedBy = "user")
+////    @JoinColumn(name = "role_permission_from_user")
+////    private RolePermission rolePermission;
+//
+//
+//    private boolean accountNonExpired = true;
+//    private boolean accountNonLocked = true;
+//    private boolean credentialsNonExpired = true;
+//    private boolean enabled;
+//
+//    @Override
+//    public Collection<? extends GrantedAuthority> getAuthorities() {
+//        //AGAR USERNING PERMISSIONLARI BO'LMASA BO'SH LIST QAYTARAMIZ
+////        if (rolePermission.getPermissions().isEmpty()) return new ArrayList<>();
+////
+////        return rolePermission.getPermissions().stream().map(permissionEnum -> new SimpleGrantedAuthority(permissionEnum.getNameEnum().name()))
+////                .collect(Collectors.toSet());
+//        return new ArrayList<>();
+//    }
+//
+//
+//
+//    @Override
+//    public boolean isAccountNonExpired() {
+//        return this.accountNonExpired;
+//    }
+//
+//    @Override
+//    public boolean isAccountNonLocked() {
+//        return this.accountNonLocked;
+//    }
+//
+//    @Override
+//    public boolean isCredentialsNonExpired() {
+//        return this.credentialsNonExpired;
+//    }
+//
+//    @Override
+//    public boolean isEnabled() {
+//        return this.enabled;
+//    }
+//
+//    public User(String username, String password, Role role, boolean enabled) {
+//        this.username = username;
+//        this.password = password;
+//        this.role = role;
+//        this.enabled = enabled;
+//    }
+//
+//
+//}

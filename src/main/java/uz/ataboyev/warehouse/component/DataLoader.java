@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import uz.ataboyev.warehouse.repository.RoleRepository;
-import uz.ataboyev.warehouse.repository.UserRepository;
+//import uz.ataboyev.warehouse.repository.RoleRepository;
+//import uz.ataboyev.warehouse.repository.UserRepository;
 import uz.ataboyev.warehouse.utils.AppConstant;
 
 
@@ -16,8 +16,8 @@ import uz.ataboyev.warehouse.utils.AppConstant;
 @Component
 @RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
-    private final RoleRepository roleRepository;
-    private final UserRepository userRepository;
+//    private final RoleRepository roleRepository;
+//    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
 
