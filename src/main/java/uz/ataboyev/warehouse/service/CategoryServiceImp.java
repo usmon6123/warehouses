@@ -24,9 +24,9 @@ public class CategoryServiceImp implements CategoryService {
     @Override
     public ApiResult<?> add(CategoryDto categoryDto) {
 
-        if (categoryRepository.existsByNameAndWarehouseId(categoryDto.getName(),categoryDto.getWarehouseId()))
+        if (categoryRepository.existsByNameAndWarehouseId(categoryDto.getName(), categoryDto.getWarehouseId()))
             throw RestException.exception("Bu catalog bazada mavjud", HttpStatus.CONFLICT);
-        Category category = new Category(categoryDto.getName(),categoryDto.getWarehouseId());
+        Category category = new Category(categoryDto.getName(), categoryDto.getWarehouseId());
 
         categoryRepository.save(category);
 
@@ -47,10 +47,16 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public ApiResult<?> getAllCategories(Long wareHouseId) {
+        List<CategoryResDto> allCategoryList = getAllCategoryList(wareHouseId);
+        return ApiResult.successResponse(allCategoryList);
+    }
+
+    @Override
+    public List<CategoryResDto> getAllCategoryList(Long wareHouseId) {
         List<Category> categories = categoryRepository.findAllByWarehouseId(wareHouseId);
-        List<CategoryResDto> resCategories =
-                categories.stream().map(category -> new CategoryResDto(category.getId(),category.getName())).collect(Collectors.toList());
-        return ApiResult.successResponse(resCategories);
+
+        return categories.stream().map(category -> new CategoryResDto(category.getId(), category.getName())).collect(Collectors.toList());
+
     }
 
     @Override

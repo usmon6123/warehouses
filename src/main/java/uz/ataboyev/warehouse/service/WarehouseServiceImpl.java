@@ -29,15 +29,18 @@ public class WarehouseServiceImpl implements WarehouseService {
     public ApiResult<?> add(WareHouseReqDto warehouseReqDto) {
 
         //COMPANIYA YOQ BO'LSA HATOLIK BERADI
-        if (!baseService.existsCompany(warehouseReqDto.getCompanyId()))return ApiResult.errorResponse("Companiya mavjudmas");
+        if (!baseService.existsCompany(warehouseReqDto.getCompanyId()))
+            return ApiResult.errorResponse("Companiya mavjudmas");
 
         //NOMINI UNIQLIKKA TEKSHIRADI
         if (warehouseRepository.existsByName(warehouseReqDto.getName()))
             throw RestException.restThrow("Bu nomli omborxona mavjud", HttpStatus.CONFLICT);
 
-        Warehouse warehouse = warehouseRepository.save(new Warehouse(warehouseReqDto));
+        Warehouse newWarehouse = Warehouse.make(warehouseReqDto);
 
-        return ApiResult.successResponse("success added warehouse id: " + warehouse.getId() + " name: " + warehouse.getName());
+        warehouseRepository.save(newWarehouse);
+
+        return ApiResult.successResponse("success added warehouse id: " + newWarehouse.getId() + " name: " + newWarehouse.getName());
     }
 
     @Override

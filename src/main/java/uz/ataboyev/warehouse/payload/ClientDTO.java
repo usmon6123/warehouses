@@ -4,14 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
-public class CategoryDto {
+public class ClientDTO {
 
     private Long id;
 
-    private String name;
+    private String fullName;
 
-    private Long warehouseId;
+    private String phoneNumber;
 }
