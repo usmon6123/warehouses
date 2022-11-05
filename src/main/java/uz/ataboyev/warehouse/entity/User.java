@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import uz.ataboyev.warehouse.entity.template.AbsUUIDEntity;
+import uz.ataboyev.warehouse.payload.UserDTO;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -19,7 +20,8 @@ import java.util.stream.Collectors;
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter@Setter
+@Getter
+@Setter
 @Entity(name = "users")
 public class User extends AbsUUIDEntity implements UserDetails {
 
@@ -43,6 +45,7 @@ public class User extends AbsUUIDEntity implements UserDetails {
     private boolean credentialsNonExpired = true;
     private boolean enabled;
 
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         //AGAR USERNING PERMISSIONLARI BO'LMASA BO'SH LIST QAYTARAMIZ
@@ -52,7 +55,6 @@ public class User extends AbsUUIDEntity implements UserDetails {
 //                .collect(Collectors.toSet());
         return new ArrayList<>();
     }
-
 
 
     @Override
