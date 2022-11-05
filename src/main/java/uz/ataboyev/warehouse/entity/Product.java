@@ -16,6 +16,7 @@ public class Product extends AbsLongEntity {
     @Column(unique = true, nullable = false)
     private String name;
     private String code;
+
     private Long minCount;
 
 
@@ -29,9 +30,10 @@ public class Product extends AbsLongEntity {
     //----------------------------------------------------------------------------
 
 
-    public Product(String name, String code, Long categoryId) {
+    public Product(String name, String code, Long categoryId, Long minCount) {
         this.name = name;
         this.code = code;
         this.categoryId = categoryId;
+        this.minCount = minCount;
     }
 }

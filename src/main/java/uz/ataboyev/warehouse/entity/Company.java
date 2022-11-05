@@ -16,4 +16,5 @@ public class Company extends AbsLongEntity {
 
     @Column(nullable = false)
     private String name;
+
 }

@@ -7,7 +7,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.http.converter.HttpMessageNotWritableException;
-import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.validation.BindException;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
@@ -198,10 +197,4 @@ public class ExceptionHelper {
         return new ResponseEntity<>(new ApiResult<>(ex.getMessage(), ex.getStatus().value()), ex.getStatus());
     }
 
-
-
-    @ExceptionHandler(value = {AuthenticationServiceException.class})
-    public ResponseEntity<?>handleException(AuthenticationServiceException ex){
-        return new ResponseEntity<>(new ApiResult<>(ex.getMessage(),404), HttpStatus.NOT_FOUND);
-    }
 }

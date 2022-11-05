@@ -9,7 +9,7 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = true)
 @Getter
 @Setter
-@AllArgsConstructor
+//@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Warehouse extends AbsLongEntity {
@@ -18,21 +18,27 @@ public class Warehouse extends AbsLongEntity {
     private String name;
 
     //----------------------------------------------------------------------------
-    @ManyToOne(fetch = FetchType.LAZY,optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(insertable = false, updatable = false, name = "company_id")
     private Company company;
 
     @Column(name = "company_id")
     private Long companyId;
+
     //----------------------------------------------------------------------------
 
-    public Warehouse(WareHouseReqDto wareHouseReqDto) {
-        this.name = wareHouseReqDto.getName();
-        this.companyId = wareHouseReqDto.getCompanyId();
+
+    public Warehouse(String name, Long companyId) {
+        this.name = name;
+        this.companyId = companyId;
     }
 
+    public static Warehouse make(WareHouseReqDto warehouseReqDto) {
 
-//    public static Warehouse mapWarehouse(WareHouseReqDto wareHouseReqDto){
-//        return new Warehouse(wareHouseReqDto.getName(), wareHouseReqDto.getCompanyId());
-//    }
+        return new Warehouse(
+                warehouseReqDto.getName(),
+                warehouseReqDto.getCompanyId()
+        );
+
+    }
 }

@@ -33,6 +33,10 @@ public class RestException extends RuntimeException {
         return new RestException(userMsg, httpStatus);
     }
 
+    public static RestException restThrow(String userMsg) {
+        return new RestException(userMsg, HttpStatus.BAD_REQUEST);
+    }
+
     public static RestException restThrow(List<ErrorData> errors, HttpStatus status) {
         return new RestException(status, errors);
     }

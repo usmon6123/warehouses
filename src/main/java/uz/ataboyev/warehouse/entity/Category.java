@@ -11,9 +11,10 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "warehouse_id"})})
 public class Category extends AbsLongEntity {
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String name;
 
     //----------------------------------------------------------------------------

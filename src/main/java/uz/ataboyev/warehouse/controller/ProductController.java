@@ -16,14 +16,12 @@ public interface ProductController {
     @GetMapping("/get-one/{categoryId}")
     ApiResult<?> getOne(@PathVariable Long categoryId);
 
-    @GetMapping("/get-child-category/{parentId}")
-    ApiResult<?> getChildCategories(@PathVariable Long parentId);
 
-    @GetMapping("/get-parent-category")
-    ApiResult<?> getParentCategories();
+    @GetMapping("/get-all-category-by-whId/{whId}")
+    ApiResult<?> getAllCategoryByWarehouseId(@PathVariable Long whId);
 
     @PutMapping("/edit/{categoryId}")
-    ApiResult<?> edit(@PathVariable Long categoryId);
+    ApiResult<?> edit(@PathVariable Long categoryId, @RequestBody @Valid ProductDto productDto);
 
     @DeleteMapping("/delete/{categoryId}")
     ApiResult<?> delete(@PathVariable Long categoryId);
