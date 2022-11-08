@@ -3,11 +3,9 @@ package uz.ataboyev.warehouse.entity;
 import lombok.*;
 import uz.ataboyev.warehouse.entity.template.AbsLongEntity;
 import uz.ataboyev.warehouse.enums.Type;
+import uz.ataboyev.warehouse.payload.ClientReqDto;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Getter
@@ -15,15 +13,19 @@ import javax.persistence.Enumerated;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"full_name","phone_number"})})
 public class Client extends AbsLongEntity {
 
-    @Column(nullable = false)
-    private String name;
+    @Column(nullable = false,name = "full_name")
+    private String fullName;
 
-    @Enumerated(EnumType.STRING)
-    private Type type;
-
+    @Column(nullable = false,name = "phone_number")
     private String phoneNumber;
 
+    public static Client make(ClientReqDto clientReqDto) {
+        return new Client(clientReqDto.getFullName(),clientReqDto.getPhoneNumber());
+    }
+
+//    private Double totalSum;//clientning bir qancha savdolaridagi umumiy PULI
 
 }

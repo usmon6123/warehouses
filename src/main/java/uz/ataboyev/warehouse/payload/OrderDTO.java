@@ -5,9 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 
 @Data
 @AllArgsConstructor
@@ -17,6 +14,6 @@ public class OrderDTO {
 
     private OptionDTO<CategoryResDto> categoryDtoOptionDTO;
     private OptionDTO<ProductDto> productDtoOptionDTO;
-    private OptionDTO<ClientDTO> clientDTOOptionDTO;
+    private OptionDTO<ClientResDto> clientDTOOptionDTO;
 
 }

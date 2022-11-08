@@ -30,7 +30,7 @@ public class Order extends AbsLongEntity {
     private String description;
 
 
-    @OneToMany(mappedBy = "order_id")
+    @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;
 
 

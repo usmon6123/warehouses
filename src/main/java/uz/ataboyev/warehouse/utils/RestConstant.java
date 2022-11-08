@@ -18,6 +18,7 @@ public interface RestConstant {
     String COMPANY_CONTROLLER = BASE_PATH + "/company"; ;
     String CATEGORY_CONTROLLER = BASE_PATH + "/category";
     String PRODUCT_CONTROLLER = BASE_PATH + "/product";
+    String CLIENT_CONTROLLER = BASE_PATH + "/client";
 
 }
 //4 8 12 20 32 52 84 136 220 356 576 932 1508 2404 3912

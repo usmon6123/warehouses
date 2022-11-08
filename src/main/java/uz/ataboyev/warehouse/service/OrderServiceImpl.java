@@ -2,7 +2,6 @@ package uz.ataboyev.warehouse.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import uz.ataboyev.warehouse.entity.Category;
 import uz.ataboyev.warehouse.entity.Order;
 import uz.ataboyev.warehouse.entity.OrderItem;
 import uz.ataboyev.warehouse.exception.RestException;
@@ -28,12 +27,12 @@ public class OrderServiceImpl implements OrderService {
 
         List<ProductDto> productDtoList = productService.getAllProductListByCategoryId(1L);
         List<CategoryResDto> categoryResDtoList = categoryService.getAllCategoryList(1L);
-        List<ClientDTO> clientDTOList = clientService.getAll();
+        List<ClientResDto> clientResDtoList = clientService.getAll();
 
         OrderDTO result = new OrderDTO(
                 OptionDTO.makeOptionDTO(categoryResDtoList),
                 OptionDTO.makeOptionDTO(productDtoList),
-                OptionDTO.makeOptionDTO(clientDTOList)
+                OptionDTO.makeOptionDTO(clientResDtoList)
         );
 
         return ApiResult.successResponse(result);

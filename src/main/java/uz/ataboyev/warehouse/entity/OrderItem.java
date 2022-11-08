@@ -17,12 +17,13 @@ import java.util.stream.Collectors;
 @Entity
 public class OrderItem extends AbsLongEntity {
 
-    @JoinColumn(name = "order_id", insertable = false, updatable = false)
+//    @JoinColumn(name = "order_id", insertable = false, updatable = false)
+    @JoinColumn(name = "order_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Order order;
-
-    @Column(name = "order_id", nullable = false)
-    private Long orderId;
+//
+//    @Column(name = "order_id", nullable = false)
+//    private Long orderId;
 
     @JoinColumn(insertable = false, updatable = false, name = "product_id")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -43,7 +44,7 @@ public class OrderItem extends AbsLongEntity {
 
 
     public OrderItem(Long orderId, Long productId, Double count, CurrencyTypeEnum currencyType, Double amount) {
-        this.orderId = orderId;
+//        this.orderId = orderId;
         this.productId = productId;
         this.count = count;
         this.currencyType = currencyType;
