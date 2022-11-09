@@ -25,8 +25,8 @@ public class ClientControllerImpl implements ClientController{
     }
 
     @Override
-    public ApiResult<?> getAllByCompanyId(Long companyId) {
-        return clientService.getAllByCompanyId(companyId);
+    public ApiResult<?> getAllClient() {
+        return clientService.getAllClient();
     }
 
     @Override

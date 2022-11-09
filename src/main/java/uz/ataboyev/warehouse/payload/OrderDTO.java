@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class OrderDTO {
 
     private OptionDTO<CategoryResDto> categoryDtoOptionDTO;
-    private OptionDTO<ProductDto> productDtoOptionDTO;
+    private OptionDTO<ProductResDto> productDtoOptionDTO;
     private OptionDTO<ClientResDto> clientDTOOptionDTO;
 
 }

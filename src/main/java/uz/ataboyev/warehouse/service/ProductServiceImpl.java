@@ -1,13 +1,15 @@
 package uz.ataboyev.warehouse.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.ataboyev.warehouse.entity.Product;
 import uz.ataboyev.warehouse.exception.RestException;
 import uz.ataboyev.warehouse.payload.ApiResult;
-import uz.ataboyev.warehouse.payload.CategoryDto;
-import uz.ataboyev.warehouse.payload.ProductDto;
+import uz.ataboyev.warehouse.payload.ProductReqDto;
+import uz.ataboyev.warehouse.payload.ProductResDto;
 import uz.ataboyev.warehouse.repository.ProductRepository;
+import uz.ataboyev.warehouse.service.base.BaseService;
 
 import java.util.List;
 import java.util.Objects;
@@ -16,35 +18,54 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
+
     private final ProductRepository productRepository;
+    private final BaseService baseService;
 
     @Override
-    public ApiResult<?> add(ProductDto productDto) {
-        Product save = productRepository.save(new Product(
-                productDto.getName(),
-                productDto.getCode(),
-                productDto.getCategoryId(),
-                productDto.getMinCount()
-        ));
+    public ApiResult<?> add(ProductReqDto productReqDto) {
 
-        return ApiResult.successResponse(save);
+        //CATEGORIYA TEKSHIRILYABDI
+        if (!baseService.checkCategoryById(productReqDto.getCategoryId()))
+            throw RestException.restThrow("Mahsulotning kategoriyasi topilmadi", HttpStatus.NOT_FOUND);
+
+        if (productRepository.existsByName(productReqDto.getName()))
+            throw RestException.restThrow("Bu nomli mahsulot mavjud", HttpStatus.CONFLICT);
+
+        Product product = Product.make(productReqDto);
+
+        savedProduct(product);
+
+        ProductResDto productResDto = ProductResDto.makeDTO(product);
+
+        return ApiResult.successResponse(productResDto,"product muvafaqiyatli saqlandi");
     }
 
     @Override
     public ApiResult<?> getOne(Long productId) {
-        return null;
+
+        Product product = baseService.getProductById(productId);
+
+        ProductResDto productResDto = ProductResDto.makeDTO(product);
+
+        return ApiResult.successResponse(productResDto);
     }
 
     @Override
-    public List<ProductDto> getAllProductListByCategoryId(Long categoryId) {
+    public ApiResult<?> getAllProductsByCategoryId(Long categoryId) {
+        List<ProductResDto> productResDtos = getAllProductListByCategoryId(categoryId);
+        return ApiResult.successResponse(productResDtos);
+    }
+
+    @Override
+    public List<ProductResDto> getAllProductListByCategoryId(Long categoryId) {
         List<Product> productList = productRepository.findAll();
-
-        return productList.stream().map(ProductDto::makeDTO).collect(Collectors.toList());
+        return productList.stream().map(ProductResDto::makeDTO).collect(Collectors.toList());
     }
 
 
     @Override
-    public ApiResult<?> edit(Long productId, ProductDto productDto) {
+    public ApiResult<?> edit(Long productId, ProductReqDto productReqDto) {
         return null;
     }
 
@@ -61,5 +82,14 @@ public class ProductServiceImpl implements ProductService {
         if (!Objects.equals(productsCount, productIdList.size()))
             throw RestException.restThrow("Mavjud bolmagan product id berildi =>" + productIdList);
 
+    }
+
+    private void savedProduct(Product product) {
+        try{
+            productRepository.save(product);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw RestException.restThrow("Product saqlashda muommo bo'ldi",HttpStatus.NOT_ACCEPTABLE);
+        }
     }
 }

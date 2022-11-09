@@ -2,6 +2,7 @@ package uz.ataboyev.warehouse.entity;
 
 import lombok.*;
 import uz.ataboyev.warehouse.entity.template.AbsLongEntity;
+import uz.ataboyev.warehouse.payload.ProductReqDto;
 
 import javax.persistence.*;
 
@@ -15,9 +16,12 @@ public class Product extends AbsLongEntity {
 
     @Column(unique = true, nullable = false)
     private String name;
+
     private String code;
 
-    private Long minCount;
+    private Double minCount;//miqdor shundan kamysa sms jo'natadi
+
+    private Double count = 0D;//bazada qancha borligini bildiradi
 
 
     //----------------------------------------------------------------------------
@@ -30,10 +34,14 @@ public class Product extends AbsLongEntity {
     //----------------------------------------------------------------------------
 
 
-    public Product(String name, String code, Long categoryId, Long minCount) {
+    public Product(String name, String code, Long categoryId, Double minCount) {
         this.name = name;
         this.code = code;
         this.categoryId = categoryId;
         this.minCount = minCount;
+    }
+
+    public static Product make(ProductReqDto productReqDto) {
+        return new Product(productReqDto.getName(), productReqDto.getCode(), productReqDto.getCategoryId(), productReqDto.getMinCount());
     }
 }

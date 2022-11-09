@@ -2,7 +2,7 @@ package uz.ataboyev.warehouse.controller;
 
 import org.springframework.web.bind.annotation.*;
 import uz.ataboyev.warehouse.payload.ApiResult;
-import uz.ataboyev.warehouse.payload.ProductDto;
+import uz.ataboyev.warehouse.payload.ProductReqDto;
 import uz.ataboyev.warehouse.utils.RestConstant;
 
 import javax.validation.Valid;
@@ -11,19 +11,18 @@ import javax.validation.Valid;
 public interface ProductController {
 
     @PostMapping("/add")
-    ApiResult<?> add(@RequestBody @Valid ProductDto productDto);
+    ApiResult<?> add(@RequestBody @Valid ProductReqDto productReqDto);
 
-    @GetMapping("/get-one/{categoryId}")
-    ApiResult<?> getOne(@PathVariable Long categoryId);
+    @GetMapping("/get-one/{productId}")
+    ApiResult<?> getOne(@PathVariable Long productId);
 
+    @GetMapping("/get-all-product-by-categoryId/{categoryId}")
+    ApiResult<?> getAllProductByCategoryId(@PathVariable Long categoryId);
 
-    @GetMapping("/get-all-category-by-whId/{whId}")
-    ApiResult<?> getAllCategoryByWarehouseId(@PathVariable Long whId);
+    @PutMapping("/edit/{productId}")
+    ApiResult<?> edit(@PathVariable Long productId, @RequestBody @Valid ProductReqDto productReqDto);
 
-    @PutMapping("/edit/{categoryId}")
-    ApiResult<?> edit(@PathVariable Long categoryId, @RequestBody @Valid ProductDto productDto);
-
-    @DeleteMapping("/delete/{categoryId}")
-    ApiResult<?> delete(@PathVariable Long categoryId);
+    @DeleteMapping("/delete/{productId}")
+    ApiResult<?> delete(@PathVariable Long productId);
 
 }

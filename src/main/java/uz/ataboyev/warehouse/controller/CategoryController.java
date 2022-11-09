@@ -25,5 +25,4 @@ public interface CategoryController {
     @DeleteMapping("/delete/{categoryId}")
     ApiResult<?> delete(@PathVariable Long categoryId);
 
-
 }

@@ -30,7 +30,7 @@ public class CategoryServiceImp implements CategoryService {
 
         categoryRepository.save(category);
 
-        return ApiResult.successResponse("SUCCESS ADDED \nid: " + category.getId() + "\n name: " + category.getName());
+        return ApiResult.successResponse("SUCCESS ADDED id: " + category.getId() + " name: " + category.getName());
     }
 
     @Override
@@ -47,8 +47,7 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public ApiResult<?> getAllCategories(Long wareHouseId) {
-        List<CategoryResDto> allCategoryList = getAllCategoryList(wareHouseId);
-        return ApiResult.successResponse(allCategoryList);
+        return ApiResult.successResponse(getAllCategoryList(wareHouseId));
     }
 
     @Override

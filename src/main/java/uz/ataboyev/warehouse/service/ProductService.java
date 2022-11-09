@@ -1,19 +1,21 @@
 package uz.ataboyev.warehouse.service;
 
 import uz.ataboyev.warehouse.payload.ApiResult;
-import uz.ataboyev.warehouse.payload.CategoryDto;
-import uz.ataboyev.warehouse.payload.ProductDto;
+import uz.ataboyev.warehouse.payload.ProductReqDto;
+import uz.ataboyev.warehouse.payload.ProductResDto;
 
 import java.util.List;
 
 public interface ProductService {
-    ApiResult<?> add(ProductDto productDto);
+    ApiResult<?> add(ProductReqDto productReqDto);
 
     ApiResult<?> getOne(Long productId);
 
-    List<ProductDto> getAllProductListByCategoryId(Long categoryId);
+    ApiResult<?> getAllProductsByCategoryId(Long categoryId);
 
-    ApiResult<?> edit(Long productId, ProductDto productDto);
+    List<ProductResDto> getAllProductListByCategoryId(Long categoryId);
+
+    ApiResult<?> edit(Long productId, ProductReqDto productReqDto);
 
     ApiResult<?> delete(Long productId);
 

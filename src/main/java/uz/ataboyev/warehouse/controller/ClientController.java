@@ -18,8 +18,8 @@ public interface ClientController {
     @GetMapping("/get-one/{clientId}")
     ApiResult<?> getOne(@PathVariable Long clientId);
 
-    @GetMapping("/get-all-clients/{companyId}")
-    ApiResult<?> getAllByCompanyId(@PathVariable Long companyId);
+    @GetMapping("/get-all-clients")
+    ApiResult<?> getAllClient();
 
     @PutMapping("/edit/{clientId}")
     ApiResult<?> edit(@PathVariable Long clientId, @RequestBody ClientReqDto clientReqDto);

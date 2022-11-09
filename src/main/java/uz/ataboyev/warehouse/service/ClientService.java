@@ -18,7 +18,7 @@ public interface ClientService {
 
     ApiResult<?> getOne(Long clientId);
 
-    ApiResult<?> getAllByCompanyId(Long companyId);
+    ApiResult<?> getAllClient();
 
     ApiResult<?> delete(Long clientId);
 

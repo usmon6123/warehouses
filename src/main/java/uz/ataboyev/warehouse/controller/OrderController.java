@@ -15,7 +15,7 @@ public interface OrderController {
 
 
     @GetMapping("/by-order")
-    ApiResult<?> byOrder();
+    ApiResult<?> byOrder(Long whId,Long categoryId);
 
 
     @GetMapping("/add-order")

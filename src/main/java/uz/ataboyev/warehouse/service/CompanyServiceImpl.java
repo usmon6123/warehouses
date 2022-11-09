@@ -51,13 +51,14 @@ public class CompanyServiceImpl implements CompanyService {
     public ApiResult<?> edit(Long compId, CompanyReqDto companyReqDto) {
 
         //todo queryni to'g'irlash kerak
-        if (companyRepository.existsByName(companyReqDto.getName()))
+        if (companyRepository.existsByNameAndIdNot(companyReqDto.getName(),compId))
             throw RestException.restThrow("Bu nomli Companiya mavjud", HttpStatus.CONFLICT);
 
         Company company = baseService.getCompanyById(compId);
 
-        company.setName(company.getName());
+        company.setName(companyReqDto.getName());
         companyRepository.save(company);
+
         return ApiResult.successResponse(new CompanyResDto(company), "success edited");
     }
 

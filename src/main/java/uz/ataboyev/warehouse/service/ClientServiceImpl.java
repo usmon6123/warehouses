@@ -12,6 +12,8 @@ import uz.ataboyev.warehouse.repository.ClientRepository;
 import uz.ataboyev.warehouse.service.base.BaseService;
 
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -40,9 +42,13 @@ public class ClientServiceImpl implements ClientService{
         //CLIENTNI BAZADAN OLIB KELADI TOPOLMASA THROW
         Client client = baseService.getClientById(clientId);
 
-        updateClient(client,clientReqDto);
+        //YANGI TEL RAQAM BAZADA MAVJUD BO'LSA THROW
+        if (clientRepository.existsByPhoneNumberAndIdNot(clientReqDto.getPhoneNumber(),client.getId()))
+            throw new RestException("Yangi kiritgan raqamiz bazada mavjudligi uchun boshqa raqam kiriting!",HttpStatus.CONFLICT);
 
-        saveClient(client);
+        Client saveClient = Client.updateClient(client,clientReqDto);
+
+        saveClient(saveClient);
 
         ClientResDto clientResDto = mapClient(client);
 
@@ -51,29 +57,45 @@ public class ClientServiceImpl implements ClientService{
 
     @Override
     public ApiResult<?> getOne(Long clientId) {
-        return null;
+
+        Client client = baseService.getClientById(clientId);
+
+        ClientResDto clientResDto = mapClient(client);
+
+        return ApiResult.successResponse(clientResDto);
     }
 
     @Override
-    public ApiResult<?> getAllByCompanyId(Long companyId) {
-        return null;
+    public ApiResult<?> getAllClient() {
+        List<Client> clientList = clientRepository.findAll();
+        List<ClientResDto> clientResDtos = mapClients(clientList);
+        return ApiResult.successResponse(clientResDtos);
     }
-
     @Override
     public ApiResult<?> delete(Long clientId) {
-        return null;
+        //MIJOZNING ORDERLARI BOR BOLSA OCHIRMAYMIZ
+        baseService.checkOrdersOfClient(clientId);
+
+        if (!baseService.existsClientById(clientId)) {
+            throw RestException.restThrow("o'chirmoqchi bo'lgan mijozis bazada mavjudmas");
+        }
+
+        clientRepository.deleteById(clientId);
+        return ApiResult.successResponse("Mijoz o'chirildi");
     }
 
     @Override
     public List<ClientResDto> getAll() {
-        return null;
+        List<Client> clientList = clientRepository.findAll();
+        return mapClients(clientList);
     }
 
     @Override
     public void checkingClientByIdListOrElseThrow(List<Long> clientIdList) {
-
-        // TODO: 06/11/22
-
+        for (Long id : clientIdList) {
+            if (!clientRepository.existsById(id))
+                throw new RestException("Bu mijozni biz bazadan topa olmadik",HttpStatus.NOT_FOUND);
+        }
     }
 
 
@@ -92,17 +114,17 @@ public class ClientServiceImpl implements ClientService{
         }
     }
 
-    private void updateClient(Client client, ClientReqDto clientReqDto) {
 
-        if (clientRepository.existsByPhoneNumberAndIdNot(clientReqDto.getPhoneNumber(),client.getId()))
-            throw new RestException("Yangi kiritgan raqamiz bazada mavjudligi uchun boshqa raqam kiriting!",HttpStatus.CONFLICT);
 
-        client.setFullName(clientReqDto.getFullName());
-        client.setPhoneNumber(clientReqDto.getPhoneNumber());
-    }
-
+    //CLIENTDAN DTO YASABERADI
     private ClientResDto mapClient(Client client) {
-        return new ClientResDto(client.getId(),client.getFullName(), client.getPhoneNumber());
+        return ClientResDto.make(client);
     }
+
+    private List<ClientResDto> mapClients(List<Client> clients) {
+        return clients.stream().map(ClientResDto::make).collect(Collectors.toList());
+
+    }
+
 
 }

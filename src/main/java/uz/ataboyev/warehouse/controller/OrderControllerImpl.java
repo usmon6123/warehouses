@@ -14,8 +14,8 @@ public class OrderControllerImpl implements OrderController {
 
 
     @Override
-    public ApiResult<?> byOrder() {
-        return orderService.byOrder();
+    public ApiResult<?> byOrder(Long whId,Long categoryId) {
+        return orderService.byOrder(whId,categoryId);
     }
 
     @Override
