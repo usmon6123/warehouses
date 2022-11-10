@@ -8,6 +8,7 @@ import uz.ataboyev.warehouse.exception.RestException;
 import uz.ataboyev.warehouse.payload.ApiResult;
 import uz.ataboyev.warehouse.payload.CategoryDto;
 import uz.ataboyev.warehouse.payload.CategoryResDto;
+import uz.ataboyev.warehouse.payload.OptionResDto;
 import uz.ataboyev.warehouse.repository.CategoryRepository;
 import uz.ataboyev.warehouse.repository.ProductRepository;
 
@@ -39,7 +40,7 @@ public class CategoryServiceImp implements CategoryService {
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new RestException("Category not Found", HttpStatus.NOT_FOUND));
 
         CategoryResDto categoryResDto =
-                new CategoryResDto(category.getId(), category.getName());
+                CategoryResDto.make(category);
 
         return ApiResult.successResponse(categoryResDto);
     }
@@ -47,20 +48,19 @@ public class CategoryServiceImp implements CategoryService {
 
     @Override
     public ApiResult<?> getAllCategories(Long wareHouseId) {
-        return ApiResult.successResponse(getAllCategoryList(wareHouseId));
+        List<Category> categories = getCategoriesByWhId(wareHouseId);
+        List<CategoryResDto> collect = categories.stream().map(CategoryResDto::make).collect(Collectors.toList());
+        return ApiResult.successResponse(collect);
     }
 
     @Override
-    public List<CategoryResDto> getAllCategoryList(Long wareHouseId) {
+    public List<OptionResDto> getCategoryListForOption(Long wareHouseId) {
         List<Category> categories = categoryRepository.findAllByWarehouseId(wareHouseId);
-
-        return categories.stream().map(category -> new CategoryResDto(category.getId(), category.getName())).collect(Collectors.toList());
-
+        return categories.stream().map(OptionResDto::make).collect(Collectors.toList());
     }
 
     @Override
     public ApiResult<?> edit(Long categoryId, CategoryDto categoryDto) {
-
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> RestException.restThrow("Bu idli Categoriya mavjudmas", HttpStatus.NOT_FOUND));
         category.setName(categoryDto.getName());
         categoryRepository.save(category);
@@ -79,5 +79,7 @@ public class CategoryServiceImp implements CategoryService {
 
         return ApiResult.successResponse("DELETED_CATEGORY");
     }
-
+    private List<Category> getCategoriesByWhId(Long wareHouseId) {
+        return  categoryRepository.findAllByWarehouseId(wareHouseId);
+    }
 }

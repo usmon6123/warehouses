@@ -8,6 +8,7 @@ import uz.ataboyev.warehouse.exception.RestException;
 import uz.ataboyev.warehouse.payload.ApiResult;
 import uz.ataboyev.warehouse.payload.ClientReqDto;
 import uz.ataboyev.warehouse.payload.ClientResDto;
+import uz.ataboyev.warehouse.payload.OptionResDto;
 import uz.ataboyev.warehouse.repository.ClientRepository;
 import uz.ataboyev.warehouse.service.base.BaseService;
 
@@ -71,6 +72,12 @@ public class ClientServiceImpl implements ClientService{
         List<ClientResDto> clientResDtos = mapClients(clientList);
         return ApiResult.successResponse(clientResDtos);
     }
+    @Override
+    public List<OptionResDto> getClientsForOption() {
+        List<Client> clientList = clientRepository.findAll();
+        return clientList.stream().map(OptionResDto::make).collect(Collectors.toList());
+    }
+
     @Override
     public ApiResult<?> delete(Long clientId) {
         //MIJOZNING ORDERLARI BOR BOLSA OCHIRMAYMIZ

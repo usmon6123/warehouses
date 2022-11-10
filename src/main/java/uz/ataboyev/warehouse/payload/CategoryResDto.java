@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import uz.ataboyev.warehouse.entity.Category;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -11,7 +12,11 @@ import lombok.Setter;
 @Setter
 public class CategoryResDto {
 
-    private Long categoryId;
+    private Long id;
     private String name;
+
+    public  static CategoryResDto make(Category category){
+        return new CategoryResDto(category.getId(),category.getName());
+    }
 
 }

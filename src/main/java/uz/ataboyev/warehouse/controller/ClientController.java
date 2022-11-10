@@ -1,13 +1,11 @@
 package uz.ataboyev.warehouse.controller;
 
 import org.springframework.web.bind.annotation.*;
-import uz.ataboyev.warehouse.payload.ApiResult;
-import uz.ataboyev.warehouse.payload.CategoryDto;
-import uz.ataboyev.warehouse.payload.ClientReqDto;
-import uz.ataboyev.warehouse.payload.ClientResDto;
+import uz.ataboyev.warehouse.payload.*;
 import uz.ataboyev.warehouse.utils.RestConstant;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RequestMapping(path = RestConstant.CLIENT_CONTROLLER)
 public interface ClientController {
@@ -20,6 +18,9 @@ public interface ClientController {
 
     @GetMapping("/get-all-clients")
     ApiResult<?> getAllClient();
+
+    @GetMapping("/get-clients-for-option")
+    List<OptionResDto>getClients();
 
     @PutMapping("/edit/{clientId}")
     ApiResult<?> edit(@PathVariable Long clientId, @RequestBody ClientReqDto clientReqDto);

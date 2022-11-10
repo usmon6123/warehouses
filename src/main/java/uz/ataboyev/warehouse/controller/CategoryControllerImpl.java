@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import uz.ataboyev.warehouse.payload.ApiResult;
 import uz.ataboyev.warehouse.payload.CategoryDto;
+import uz.ataboyev.warehouse.payload.OptionResDto;
 import uz.ataboyev.warehouse.service.CategoryService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +33,12 @@ public class CategoryControllerImpl implements CategoryController {
 
         return categoryService.getAllCategories(wareHouseId);
     }
+
+    @Override
+    public List<OptionResDto> getAllCategoriesForOption(Long wareHouseId) {
+        return categoryService.getCategoryListForOption(wareHouseId);
+    }
+
 
     @Override
     public ApiResult<?> edit(Long categoryId, CategoryDto categoryDto) {

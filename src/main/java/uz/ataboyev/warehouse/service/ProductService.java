@@ -1,6 +1,7 @@
 package uz.ataboyev.warehouse.service;
 
 import uz.ataboyev.warehouse.payload.ApiResult;
+import uz.ataboyev.warehouse.payload.OptionResDto;
 import uz.ataboyev.warehouse.payload.ProductReqDto;
 import uz.ataboyev.warehouse.payload.ProductResDto;
 
@@ -13,7 +14,7 @@ public interface ProductService {
 
     ApiResult<?> getAllProductsByCategoryId(Long categoryId);
 
-    List<ProductResDto> getAllProductListByCategoryId(Long categoryId);
+    List<OptionResDto> getProductsForOptionByCategoryId(Long categoryId);
 
     ApiResult<?> edit(Long productId, ProductReqDto productReqDto);
 

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import uz.ataboyev.warehouse.entity.Product;
 import uz.ataboyev.warehouse.exception.RestException;
 import uz.ataboyev.warehouse.payload.ApiResult;
+import uz.ataboyev.warehouse.payload.OptionResDto;
 import uz.ataboyev.warehouse.payload.ProductReqDto;
 import uz.ataboyev.warehouse.payload.ProductResDto;
 import uz.ataboyev.warehouse.repository.ProductRepository;
@@ -53,14 +54,18 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ApiResult<?> getAllProductsByCategoryId(Long categoryId) {
-        List<ProductResDto> productResDtos = getAllProductListByCategoryId(categoryId);
+
+        List<Product> productList = productRepository.findAllByCategoryId(categoryId);
+
+        List<ProductResDto> productResDtos = productList.stream().map(ProductResDto::makeDTO).collect(Collectors.toList());
+
         return ApiResult.successResponse(productResDtos);
     }
 
     @Override
-    public List<ProductResDto> getAllProductListByCategoryId(Long categoryId) {
-        List<Product> productList = productRepository.findAll();
-        return productList.stream().map(ProductResDto::makeDTO).collect(Collectors.toList());
+    public List<OptionResDto> getProductsForOptionByCategoryId(Long categoryId) {
+        List<Product> productList = productRepository.findAllByCategoryId(categoryId);
+        return productList.stream().map(OptionResDto::make).collect(Collectors.toList());
     }
 
 
@@ -71,6 +76,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ApiResult<?> delete(Long productId) {
+        //todo productni o'rdera qarab ishlimiz so'ng inshaalloh
         return null;
     }
 

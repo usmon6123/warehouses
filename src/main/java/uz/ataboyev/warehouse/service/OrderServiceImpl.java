@@ -25,17 +25,18 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ApiResult<?> byOrder(Long whId,Long categoryId) {
 
-        List<ProductResDto> productResDtoList = productService.getAllProductListByCategoryId(categoryId);
-        List<CategoryResDto> categoryResDtoList = categoryService.getAllCategoryList(whId);
-        List<ClientResDto> clientResDtoList = clientService.getAll();
+//        List<ProductResDto> productResDtoList = productService.getAllProductListByCategoryId(categoryId);
+//        List<OptionResDto> optionResDtoList = categoryService.getAllCategoryList(whId);
+//        List<ClientResDto> clientResDtoList = clientService.getAll();
+//
+//        OrderDTO result = new OrderDTO(
+//                OptionDTO.makeOptionDTO(optionResDtoList),
+//                OptionDTO.makeOptionDTO(productResDtoList),
+//                OptionDTO.makeOptionDTO(clientResDtoList)
+//        );
 
-        OrderDTO result = new OrderDTO(
-                OptionDTO.makeOptionDTO(categoryResDtoList),
-                OptionDTO.makeOptionDTO(productResDtoList),
-                OptionDTO.makeOptionDTO(clientResDtoList)
-        );
-
-        return ApiResult.successResponse(result);
+//        return ApiResult.successResponse(result);
+    return null;
     }
 
     @Override

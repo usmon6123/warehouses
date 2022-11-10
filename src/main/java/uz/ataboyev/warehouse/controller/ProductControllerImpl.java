@@ -3,8 +3,12 @@ package uz.ataboyev.warehouse.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import uz.ataboyev.warehouse.payload.ApiResult;
+import uz.ataboyev.warehouse.payload.OptionDTO;
+import uz.ataboyev.warehouse.payload.OptionResDto;
 import uz.ataboyev.warehouse.payload.ProductReqDto;
 import uz.ataboyev.warehouse.service.ProductService;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +29,11 @@ public class ProductControllerImpl implements ProductController {
     @Override
     public ApiResult<?> getAllProductByCategoryId(Long categoryId) {
         return productService.getAllProductsByCategoryId(categoryId);
+    }
+
+    @Override
+    public List<OptionResDto> getProductsForOption(Long categoryId) {
+        return productService.getProductsForOptionByCategoryId(categoryId);
     }
 
 
