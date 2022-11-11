@@ -3,8 +3,8 @@ package uz.ataboyev.warehouse.enums;
 
 public enum OrderType {
 
-    INCOME,
+    INCOME, //"+" KIRIM
 
-    EXPENSE
+    EXPENDITURE //"-" CHIQIM
 
 }

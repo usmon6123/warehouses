@@ -18,6 +18,10 @@ import javax.persistence.*;
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"full_name","phone_number"})})
 public class Client extends AbsLongEntity {
 
+    @Column(nullable = false,name = "client_type")
+    @Enumerated(EnumType.STRING)
+    private Type clientType;
+
     @Column(nullable = false,name = "full_name")
     private String fullName;
 
@@ -25,7 +29,7 @@ public class Client extends AbsLongEntity {
     private String phoneNumber;
 
     public static Client make(ClientReqDto clientReqDto) {
-        return new Client(clientReqDto.getFullName(),clientReqDto.getPhoneNumber());
+        return new Client(clientReqDto.getClientType(),clientReqDto.getFullName(),clientReqDto.getPhoneNumber());
     }
 
     public static Client updateClient(Client client, ClientReqDto clientReqDto) {

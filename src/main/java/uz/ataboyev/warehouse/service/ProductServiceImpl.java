@@ -71,6 +71,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ApiResult<?> edit(Long productId, ProductReqDto productReqDto) {
+        //todo keyin qilamiz
         return null;
     }
 

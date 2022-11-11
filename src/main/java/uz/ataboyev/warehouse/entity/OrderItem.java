@@ -17,7 +17,8 @@ import java.util.stream.Collectors;
 @Entity
 public class OrderItem extends AbsLongEntity {
 
-//    @JoinColumn(name = "order_id", insertable = false, updatable = false)
+
+    //    @JoinColumn(name = "order_id", insertable = false, updatable = false)
     @JoinColumn(name = "order_id")
     @ManyToOne(fetch = FetchType.LAZY)
     private Order order;
@@ -58,7 +59,6 @@ public class OrderItem extends AbsLongEntity {
     }
 
     public static OrderItem make(OrderItemDto orderItemDto, Order order) {
-
         return new OrderItem(
                 order.getId(),
                 orderItemDto.getProductId(),

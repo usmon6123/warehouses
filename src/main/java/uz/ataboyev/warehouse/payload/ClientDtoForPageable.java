@@ -9,7 +9,7 @@ import uz.ataboyev.warehouse.enums.Type;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClientResDto {
+public class ClientDtoForPageable {
 
     private Long id;
 
@@ -17,10 +17,9 @@ public class ClientResDto {
 
     private String fullName;
 
-    private String phoneNumber;
 
-    public static ClientResDto make(Client client) {
-        return new ClientResDto(client.getId(),client.getClientType(), client.getFullName(), client.getPhoneNumber());
+    public static ClientDtoForPageable make(Client client) {
+        return new ClientDtoForPageable(client.getId(),client.getClientType(), client.getFullName());
 
     }
 }

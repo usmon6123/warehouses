@@ -12,8 +12,8 @@ import lombok.NoArgsConstructor;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderDTO {
 
-    private OptionDTO<CategoryResDto> categoryDtoOptionDTO;
-    private OptionDTO<ProductResDto> productDtoOptionDTO;
-    private OptionDTO<ClientResDto> clientDTOOptionDTO;
+    private OptionDTO<OptionResDto> categoryDtoOptionDTO;
+    private OptionDTO<OptionResDto> productDtoOptionDTO;
+    private OptionDTO<OptionResDto> clientDTOOptionDTO;
 
 }

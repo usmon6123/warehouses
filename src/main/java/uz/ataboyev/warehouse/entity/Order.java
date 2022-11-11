@@ -29,6 +29,7 @@ public class Order extends AbsLongEntity {
 
     private String description;
 
+    private Double orderPrice = 0D;
 
     @OneToMany(mappedBy = "order")
     private List<OrderItem> orderItems;

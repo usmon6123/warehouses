@@ -26,12 +26,12 @@ import java.util.UUID;
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AbsUserAudit extends AbsDateAudit {
-
-    @CreatedBy
-    @Column(name = "created_by_id", updatable = false)
-    private UUID createdById; // KIM CREATE QILGANI
-
-    @LastModifiedBy
-    @Column(name = "updated_by_id")
-    private UUID updatedById; // KIM O'ZGARTIRGANI
+//
+//    @CreatedBy
+//    @Column(name = "created_by_id", updatable = false)
+//    private UUID createdById; // KIM CREATE QILGANI
+//
+//    @LastModifiedBy
+//    @Column(name = "updated_by_id")
+//    private UUID updatedById; // KIM O'ZGARTIRGANI
 }

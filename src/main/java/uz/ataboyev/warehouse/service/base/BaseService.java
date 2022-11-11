@@ -12,6 +12,7 @@ import uz.ataboyev.warehouse.payload.WareHouseReqDto;
 import uz.ataboyev.warehouse.repository.*;
 import uz.ataboyev.warehouse.service.ClientService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,6 +25,8 @@ public class BaseService {
     private final ProductRepository productRepository;
     private final ClientRepository clientRepository;
     private final OrderRepository orderRepository;
+    public static final Double minus1 = -1D;
+
 
 
     public Warehouse getWarehouseByIdElseThrow(Long whId) {
@@ -71,6 +74,14 @@ public class BaseService {
 
     public Product getProductById(Long productId) {
         return productRepository.findById(productId).orElseThrow(() -> RestException.restThrow("Product mavjudmas"));
+    }
 
+    public void savedProductList(List<Product> productList){
+        try{
+            productRepository.saveAll(productList);
+        }catch (Exception e){
+            e.printStackTrace();
+            throw RestException.restThrow("Mahsulotlarni saqlashda muommo boldi");
+        }
     }
 }
