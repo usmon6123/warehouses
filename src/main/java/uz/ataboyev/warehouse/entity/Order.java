@@ -29,9 +29,12 @@ public class Order extends AbsLongEntity {
 
     private String description;
 
-    private Double orderPrice = 0D;
+    //umumiy jamlangan summa bitta savdodagi
+    private Double orderPriceSum = 0D;
+    private Double orderPriceDollar = 0D;
 
-    @OneToMany(mappedBy = "order")
+
+    @OneToMany(mappedBy = "order",fetch = FetchType.LAZY)
     private List<OrderItem> orderItems;
 
 

@@ -1,13 +1,12 @@
 package uz.ataboyev.warehouse.controller;
 
 import org.springframework.web.bind.annotation.*;
-import uz.ataboyev.warehouse.payload.ApiResult;
-import uz.ataboyev.warehouse.payload.CategoryDto;
-import uz.ataboyev.warehouse.payload.CustomPage;
-import uz.ataboyev.warehouse.payload.SaveOrderDTO;
+import uz.ataboyev.warehouse.payload.*;
 import uz.ataboyev.warehouse.utils.RestConstant;
 
 import javax.validation.Valid;
+
+import java.util.List;
 
 import static uz.ataboyev.warehouse.utils.AppConstant.*;
 
@@ -28,7 +27,12 @@ public interface OrderController {
     @GetMapping("/get-all-order")
     ApiResult<?> getAllOrder(@RequestBody @Valid SaveOrderDTO orderDTO);
 
-    @GetMapping("get-all-orders-pageble")
-    ApiResult<CustomPage<?>> getAllPageable(@RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) int page,
-                                            @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size);
+    @GetMapping("get-all-orders-pageable")
+    List<CustomPage<OrderPageDTO>> getAllPageable(@RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) int page,
+                                                 @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size);
+    @GetMapping("general-price-orders")
+    List<OrderPriceDto>generalPriceOrders();
+
+
+
 }

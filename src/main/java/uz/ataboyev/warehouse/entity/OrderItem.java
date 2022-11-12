@@ -3,11 +3,14 @@ package uz.ataboyev.warehouse.entity;
 import lombok.*;
 import uz.ataboyev.warehouse.entity.template.AbsLongEntity;
 import uz.ataboyev.warehouse.enums.CurrencyTypeEnum;
+import uz.ataboyev.warehouse.enums.OrderType;
 import uz.ataboyev.warehouse.payload.OrderItemDto;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static uz.ataboyev.warehouse.service.base.BaseService.minus1;
 
 @EqualsAndHashCode(callSuper = true)
 @Getter
@@ -17,14 +20,13 @@ import java.util.stream.Collectors;
 @Entity
 public class OrderItem extends AbsLongEntity {
 
-
-    //    @JoinColumn(name = "order_id", insertable = false, updatable = false)
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", insertable = false, updatable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Order order;
-//
-//    @Column(name = "order_id", nullable = false)
-//    private Long orderId;
+
+
+    @Column(name = "order_id", nullable = false)
+    private Long orderId;
 
     @JoinColumn(insertable = false, updatable = false, name = "product_id")
     @ManyToOne(fetch = FetchType.LAZY)
@@ -41,30 +43,32 @@ public class OrderItem extends AbsLongEntity {
     private CurrencyTypeEnum currencyType;
 
     @Column(nullable = false)
-    private Double amount;
+    private Double amount;//dona summasi
 
 
     public OrderItem(Long orderId, Long productId, Double count, CurrencyTypeEnum currencyType, Double amount) {
-//        this.orderId = orderId;
+        this.orderId = orderId;
         this.productId = productId;
         this.count = count;
         this.currencyType = currencyType;
         this.amount = amount;
     }
 
-    public static List<OrderItem> makeList(List<OrderItemDto> orderItemDtoList, Order order) {
+    public static List<OrderItem> makeList(List<OrderItemDto> orderItemDtoList, Long orderId,OrderType orderType) {
 
-        return orderItemDtoList.stream().map(orderItemDto -> make(orderItemDto, order)).collect(Collectors.toList());
+        return orderItemDtoList.stream().map(orderItemDto -> make(orderItemDto, orderId, orderType)).collect(Collectors.toList());
 
     }
 
-    public static OrderItem make(OrderItemDto orderItemDto, Order order) {
+    public static OrderItem make(OrderItemDto orderItemDto, Long orderId, OrderType orderType) {
+        double a = 1D;
+        if (orderType.equals(OrderType.EXPENDITURE)) a = minus1;
         return new OrderItem(
-                order.getId(),
+                orderId,
                 orderItemDto.getProductId(),
                 orderItemDto.getCount(),
                 orderItemDto.getCurrencyTypeEnum(),
-                orderItemDto.getPrice()
+                orderItemDto.getAmount() * a
         );
     }
 }

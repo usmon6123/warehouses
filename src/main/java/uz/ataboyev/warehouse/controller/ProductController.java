@@ -1,10 +1,7 @@
 package uz.ataboyev.warehouse.controller;
 
 import org.springframework.web.bind.annotation.*;
-import uz.ataboyev.warehouse.payload.ApiResult;
-import uz.ataboyev.warehouse.payload.OptionDTO;
-import uz.ataboyev.warehouse.payload.OptionResDto;
-import uz.ataboyev.warehouse.payload.ProductReqDto;
+import uz.ataboyev.warehouse.payload.*;
 import uz.ataboyev.warehouse.utils.RestConstant;
 
 import javax.validation.Valid;
@@ -20,7 +17,7 @@ public interface ProductController {
     ApiResult<?> getOne(@PathVariable Long productId);
 
     @GetMapping("/get-all-product-by-categoryId/{categoryId}")
-    ApiResult<?> getAllProductByCategoryId(@PathVariable Long categoryId);
+    List<ProductResDto> getAllProductByCategoryId(@PathVariable Long categoryId);
 
     @GetMapping("/get-products-for-option-by-categoryId/{categoryId}")
     List<OptionResDto> getProductsForOption(@PathVariable Long categoryId);

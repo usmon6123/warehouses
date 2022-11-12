@@ -2,10 +2,10 @@ package uz.ataboyev.warehouse.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
-import uz.ataboyev.warehouse.payload.ApiResult;
-import uz.ataboyev.warehouse.payload.CustomPage;
-import uz.ataboyev.warehouse.payload.SaveOrderDTO;
+import uz.ataboyev.warehouse.payload.*;
 import uz.ataboyev.warehouse.service.OrderService;
+
+import java.util.List;
 
 
 @RestController
@@ -30,7 +30,14 @@ public class OrderControllerImpl implements OrderController {
     }
 
     @Override
-    public ApiResult<CustomPage<?>> getAllPageable(int page, int size) {
-        return null;
+    public List<CustomPage<OrderPageDTO>> getAllPageable(int page, int size) {
+        return orderService.getOrdersPageable(page,size);
     }
+
+    @Override
+    public List<OrderPriceDto> generalPriceOrders() {
+        return orderService.generalPriceOrders();
+    }
+
+
 }

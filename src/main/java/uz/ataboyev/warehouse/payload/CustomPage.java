@@ -17,18 +17,4 @@ public class CustomPage<T> {
     private int totalPages; //Barcha page lar soni
     private int size; // Nechta so'ragani
 
-//    public CustomPage(int numberOfElements, int number, long totalElements, int totalPages, int size) {
-//        this.numberOfElements = numberOfElements;
-//        this.number = number;
-//        this.totalElements = totalElements;
-//        this.totalPages = totalPages;
-//        this.size = size;
-//    }
-//
-//    public CustomPage(List<T> content, int number, int totalPages, int size) {
-//        this.content = content;
-//        this.number = number;
-//        this.totalPages = totalPages;
-//        this.size = size;
-//    }
 }

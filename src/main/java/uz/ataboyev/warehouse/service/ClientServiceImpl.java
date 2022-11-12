@@ -4,14 +4,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.ataboyev.warehouse.entity.Client;
+import uz.ataboyev.warehouse.entity.OrderItem;
+import uz.ataboyev.warehouse.enums.CurrencyTypeEnum;
 import uz.ataboyev.warehouse.exception.RestException;
-import uz.ataboyev.warehouse.payload.ApiResult;
-import uz.ataboyev.warehouse.payload.ClientReqDto;
-import uz.ataboyev.warehouse.payload.ClientResDto;
-import uz.ataboyev.warehouse.payload.OptionResDto;
+import uz.ataboyev.warehouse.payload.*;
 import uz.ataboyev.warehouse.repository.ClientRepository;
+import uz.ataboyev.warehouse.repository.OrderItemRepository;
 import uz.ataboyev.warehouse.service.base.BaseService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 public class ClientServiceImpl implements ClientService{
 
     private final ClientRepository clientRepository;
+    private final OrderItemRepository orderItemRepository;
     private final BaseService baseService;
 
     @Override
@@ -79,7 +81,17 @@ public class ClientServiceImpl implements ClientService{
     }
 
     @Override
+    public List<ClientHistoryDto> clientHistory(Long clientId) {
+
+        List<OrderItem> clientItems = orderItemRepository.findAllByOrder_ClientId(clientId);
+        ClientHistoryDto clientHistoryDto = mapClientHistoryDto(clientItems);
+
+        return List.of(clientHistoryDto);
+    }
+
+    @Override
     public ApiResult<?> delete(Long clientId) {
+
         //MIJOZNING ORDERLARI BOR BOLSA OCHIRMAYMIZ
         baseService.checkOrdersOfClient(clientId);
 
@@ -107,6 +119,35 @@ public class ClientServiceImpl implements ClientService{
 
 
 //-----------------------------HELPER METHOD-------------------------------------
+
+    private ClientHistoryDto mapClientHistoryDto(List<OrderItem> clientItems) {
+        Double sum = 0D;
+        Double dollar = 0D;
+        List<ClientOrderDto>list = new ArrayList<>();
+        for (OrderItem clientItem : clientItems) {
+
+            ClientOrderDto clientOrderDto = mapClientOrderDto(clientItem);
+
+            if (clientItem.getCurrencyType().equals(CurrencyTypeEnum.SUM))
+                sum+=clientOrderDto.getPrice();
+            else dollar += clientOrderDto.getPrice();
+
+            list.add(clientOrderDto);
+        }
+
+        return new ClientHistoryDto(list,sum,dollar);
+    }
+    private ClientOrderDto mapClientOrderDto(OrderItem orderItem){
+        return new ClientOrderDto(
+                orderItem.getUpdatedAt(),
+                orderItem.getProduct().getCategory().getName(),
+                orderItem.getProduct().getName(),
+                orderItem.getCount(),
+                orderItem.getAmount(),
+                orderItem.getCurrencyType(),
+                orderItem.getAmount()*orderItem.getCount()
+        );
+    }
     private void checkingClientByPhoneNumberOrElseThrow(String phoneNumber) {
         if (clientRepository.existsByPhoneNumber(phoneNumber))
             throw RestException.restThrow("Bu raqamli mijoz bazada mavjud", HttpStatus.CONFLICT);

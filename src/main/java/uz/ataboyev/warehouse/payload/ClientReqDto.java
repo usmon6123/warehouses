@@ -12,7 +12,7 @@ public class ClientReqDto {
 
     private Type clientType;
 
-    private String fullName;
+    private String name;
 
     private String phoneNumber;
 

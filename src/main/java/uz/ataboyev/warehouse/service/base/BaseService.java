@@ -8,6 +8,7 @@ import uz.ataboyev.warehouse.entity.Company;
 import uz.ataboyev.warehouse.entity.Product;
 import uz.ataboyev.warehouse.entity.Warehouse;
 import uz.ataboyev.warehouse.exception.RestException;
+import uz.ataboyev.warehouse.payload.ClientResDto;
 import uz.ataboyev.warehouse.payload.WareHouseReqDto;
 import uz.ataboyev.warehouse.repository.*;
 import uz.ataboyev.warehouse.service.ClientService;
@@ -58,6 +59,7 @@ public class BaseService {
         return clientRepository.findById(clientId).orElseThrow(() -> RestException.restThrow("Client not found"));
     }
 
+
     public boolean existsClientById(Long clientId) {
         return clientRepository.existsById(clientId);
     }
@@ -84,4 +86,6 @@ public class BaseService {
             throw RestException.restThrow("Mahsulotlarni saqlashda muommo boldi");
         }
     }
+
+
 }

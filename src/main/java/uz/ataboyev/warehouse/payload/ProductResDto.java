@@ -14,6 +14,7 @@ public class ProductResDto {
     private String code;
     private Long categoryId;
     private Double minCount;
+    private Double count;
 
 
 
@@ -24,7 +25,8 @@ public class ProductResDto {
                 product.getName(),
                 product.getCode(),
                 product.getCategoryId(),
-                product.getMinCount()
+                product.getMinCount(),
+                product.getCount()
         );
     }
 }

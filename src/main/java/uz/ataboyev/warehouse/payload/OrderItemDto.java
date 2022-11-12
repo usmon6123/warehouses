@@ -15,11 +15,14 @@ public class    OrderItemDto {
     @NotNull(message = "productId_not_null")
     private Long productId;
 
+//    @NotNull(message = "orderId_not_null")
+//    private Long orderId;
+
     @NotNull(message = "count_not_null")
     private Double count;
 
     @NotNull(message = "price_not_null")
-    private Double price;
+    private Double amount;
 
     @NotNull(message = "currencyTypeEnum_not_null")
     private CurrencyTypeEnum currencyTypeEnum;

@@ -53,13 +53,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ApiResult<?> getAllProductsByCategoryId(Long categoryId) {
+    public List<ProductResDto> getAllProductsByCategoryId(Long categoryId) {
 
         List<Product> productList = productRepository.findAllByCategoryId(categoryId);
 
         List<ProductResDto> productResDtos = productList.stream().map(ProductResDto::makeDTO).collect(Collectors.toList());
 
-        return ApiResult.successResponse(productResDtos);
+        return productResDtos;
     }
 
     @Override

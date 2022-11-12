@@ -15,12 +15,12 @@ public class ClientResDto {
 
     private Type clientType;
 
-    private String fullName;
+    private String name;
 
     private String phoneNumber;
 
     public static ClientResDto make(Client client) {
-        return new ClientResDto(client.getId(),client.getClientType(), client.getFullName(), client.getPhoneNumber());
+        return new ClientResDto(client.getId(),client.getClientType(), client.getName(), client.getPhoneNumber());
 
     }
 }

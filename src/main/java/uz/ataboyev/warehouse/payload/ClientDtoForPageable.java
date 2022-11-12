@@ -15,11 +15,11 @@ public class ClientDtoForPageable {
 
     private Type clientType;
 
-    private String fullName;
+    private String name;
 
 
     public static ClientDtoForPageable make(Client client) {
-        return new ClientDtoForPageable(client.getId(),client.getClientType(), client.getFullName());
+        return new ClientDtoForPageable(client.getId(),client.getClientType(), client.getName());
 
     }
 }

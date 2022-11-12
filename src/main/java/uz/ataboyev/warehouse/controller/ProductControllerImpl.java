@@ -2,10 +2,7 @@ package uz.ataboyev.warehouse.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
-import uz.ataboyev.warehouse.payload.ApiResult;
-import uz.ataboyev.warehouse.payload.OptionDTO;
-import uz.ataboyev.warehouse.payload.OptionResDto;
-import uz.ataboyev.warehouse.payload.ProductReqDto;
+import uz.ataboyev.warehouse.payload.*;
 import uz.ataboyev.warehouse.service.ProductService;
 
 import java.util.List;
@@ -22,12 +19,12 @@ public class ProductControllerImpl implements ProductController {
     }
 
     @Override
-    public ApiResult<?> getOne(Long categoryId) {
-        return productService.getOne(categoryId);
+    public ApiResult<?> getOne(Long productId) {
+        return productService.getOne(productId);
     }
 
     @Override
-    public ApiResult<?> getAllProductByCategoryId(Long categoryId) {
+    public List<ProductResDto> getAllProductByCategoryId(Long categoryId) {
         return productService.getAllProductsByCategoryId(categoryId);
     }
 

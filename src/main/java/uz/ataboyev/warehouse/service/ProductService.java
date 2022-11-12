@@ -12,7 +12,7 @@ public interface ProductService {
 
     ApiResult<?> getOne(Long productId);
 
-    ApiResult<?> getAllProductsByCategoryId(Long categoryId);
+    List<ProductResDto> getAllProductsByCategoryId(Long categoryId);
 
     List<OptionResDto> getProductsForOptionByCategoryId(Long categoryId);
 

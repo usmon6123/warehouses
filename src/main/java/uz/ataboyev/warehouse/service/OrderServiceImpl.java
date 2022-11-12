@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import uz.ataboyev.warehouse.entity.Order;
 import uz.ataboyev.warehouse.entity.OrderItem;
 import uz.ataboyev.warehouse.entity.Product;
+import uz.ataboyev.warehouse.enums.CurrencyTypeEnum;
 import uz.ataboyev.warehouse.enums.OrderType;
 import uz.ataboyev.warehouse.exception.RestException;
 import uz.ataboyev.warehouse.payload.*;
@@ -19,7 +20,6 @@ import uz.ataboyev.warehouse.service.base.BaseService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.stream.Collectors;
 
 import static uz.ataboyev.warehouse.service.base.BaseService.minus1;
@@ -36,7 +36,7 @@ public class OrderServiceImpl implements OrderService {
     private final BaseService baseService;
 
     @Override
-    public ApiResult<?> byOrder(Long whId,Long categoryId) {
+    public ApiResult<?> byOrder(Long whId, Long categoryId) {
 
         List<OptionResDto> productResDtoList = productService.getProductsForOptionByCategoryId(categoryId);
         List<OptionResDto> optionResDtoList = categoryService.getCategoryListForOption(whId);
@@ -52,7 +52,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    @Transactional
     public ApiResult<?> addOrder(SaveOrderDTO orderDTO) {
 
         //product id va client idlarni haqiqatdan bazada mavjudligini soradi
@@ -61,63 +60,95 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItemDto> orderItemDtoList = orderDTO.getOrderItemDtoList();
 
         Order order = Order.make(orderDTO);
+        Order order1 = saveOrder(order);
+        System.out.println(order1.getId());
+        List<OrderItem> orderItemList = OrderItem.makeList(orderItemDtoList, order1.getId(),order1.getType());
 
-        saveOrder(order);
-
-        List<OrderItem> orderItemList = OrderItem.makeList(orderItemDtoList, order);
+        //SAVDODAGI BARCHA MAXSULOTLARNI NARHINI YIG'IBERADI SUM VA DOLLARNI ADDENNI QILIB
+        OrderPriceDto orderPriceDto = calculationOrderPrice(orderItemList);
+        saveOrder(order, orderPriceDto);
 
         orderItemListSaved(orderItemList);
 
         //PRODUCTLARNI BAZADAGI SONLARINI O'ZGARTIRIB QO'YDI
-        editProductCount(orderDTO.getOrderType(),orderItemList);
-
-        return ApiResult.successResponse("Muvaffaqiyatli saqlandi");
+        editProductCount(orderDTO.getOrderType(), orderItemList);
+        return ApiResult.successResponse(" Order muvaffaqiyatli saqlandi");
     }
+
 
     @Override
     public ApiResult<?> getAllOrder(SaveOrderDTO orderDTO) {
         return null;
     }
 
+    @Override
+    public List<CustomPage<OrderPageDTO>> getOrdersPageable(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Page<Order> orderPage = orderRepository.findAll(pageable);
+        CustomPage<OrderPageDTO> orderPageDTOCustomPage = orderPageDTOCustomPage(orderPage);
+        return List.of(orderPageDTOCustomPage);
+    }
 
-//    public ApiResult<CustomPage<SpecializationDto>> getAll(int page, int size) {
-//        Pageable pageable= PageRequest.of(page, size, Sort.by(Sort.Direction.ASC, "name"));
-//        Page<Specialization> specializationPage=specializationRepository.findAll(pageable);
-//        CustomPage<SpecializationDto> specializationDtoCustomPage=specializationDtoCustomPage(specializationPage);
-//        return ApiResult.successResponse(specializationDtoCustomPage);
-//    }
-
-
-
-
-
-
-
-
+    @Override
+    public List<OrderPriceDto> generalPriceOrders() {
+        //todo Jonibek
+        return null;
+    }
 
 
 
 
+//    --------------------------------- HELPER METHOD -----------------------------------------
+
+    private CustomPage<OrderPageDTO> orderPageDTOCustomPage(Page<Order> orderPage) {
+
+    List<OrderPageDTO> collect = new ArrayList<>();
+    List<Order> orderList = orderPage.getContent();
+
+    //HAR BIR ORDERNI ORDERPAGEGA O'GIRIB COLLECTGA YIG'IBERADI
+    for (Order order : orderList) {
+
+        //ORDER ICHIDAN CLIENTNI MALUMOTLARINI DTOGA ORABERADI
+        ClientDtoForPageable clientDto = ClientDtoForPageable.make(order.getClient());
+
+        collect.add(new OrderPageDTO(
+                order.getUpdatedAt(),
+                clientDto,
+                order.getOrderPriceSum(),
+                order.getOrderPriceDollar(),
+                order.getType()));
+    }
+
+    return new CustomPage<>(
+            collect,
+            orderPage.getNumberOfElements(),// Elementlar
+            orderPage.getNumber(), // Current page dagi elementlar soni
+            orderPage.getTotalElements(), // Current page number
+            orderPage.getTotalPages(), // Barcha elementlar soni
+            orderPage.getSize() //Barcha page lar soni
+    );
+}
 
     private void editProductCount(OrderType orderType, List<OrderItem> orderItemList) {
         try {
             double a = 1D, databaseCount;
             ArrayList<Product> productList = new ArrayList<>();
+
             //AGAR ORDER CHIQIM BO'LSA
-            if (orderType.name().equals("EXPENDITURE"))    a=minus1;
+            if (orderType.name().equals("EXPENDITURE")) a = minus1;
 
             for (OrderItem orderItem : orderItemList) {
 
                 Product product = baseService.getProductById(orderItem.getProductId());
 
-                databaseCount = product.getCount()+a*orderItem.getCount();
+                databaseCount = product.getCount() + a * orderItem.getCount();
                 product.setCount(databaseCount);
 
                 productList.add(product);
             }
             baseService.savedProductList(productList);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw RestException.restThrow("Mahsulotlarni sonini o'zgartirishda hatolik bo'ldi");
         }
@@ -136,7 +167,7 @@ public class OrderServiceImpl implements OrderService {
     private void orderItemListSaved(List<OrderItem> orderItemList) {
         try {
 
-           orderItemRepository.saveAll(orderItemList);
+            orderItemRepository.saveAll(orderItemList);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -145,14 +176,37 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-    private void saveOrder(Order order) {
+    private OrderPriceDto calculationOrderPrice(List<OrderItem> orderItemList) {
+        Double sum = orderItemList.stream().filter(orderItem ->
+                orderItem.getCurrencyType().equals(CurrencyTypeEnum.SUM)).
+                mapToDouble(orderItem ->
+                        orderItem.getCount() * orderItem.getAmount()).sum();
+        Double dollar = orderItemList.stream().filter(orderItem ->
+                orderItem.getCurrencyType().equals(CurrencyTypeEnum.DOLLAR)).
+                mapToDouble(orderItem ->
+                        orderItem.getCount() * orderItem.getAmount()).sum();
+        return new OrderPriceDto(sum, dollar);
+    }
 
+    private void saveOrder(Order order, OrderPriceDto orderPriceDto) {
         try {
+            order.setOrderPriceSum(orderPriceDto.getSum());
+            order.setOrderPriceDollar(orderPriceDto.getDollar());
             orderRepository.save(order);
         } catch (Exception e) {
             e.printStackTrace();
             throw RestException.restThrow("Order no saved");
         }
-
     }
+    private Order saveOrder(Order order) {
+        try {
+
+            return orderRepository.save(order);
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw RestException.restThrow("Order no saved");
+        }
+    }
+
+
 }

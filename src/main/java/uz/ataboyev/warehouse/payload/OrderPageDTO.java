@@ -4,10 +4,13 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.type.CurrencyType;
 import uz.ataboyev.warehouse.entity.Client;
+import uz.ataboyev.warehouse.entity.Order;
 import uz.ataboyev.warehouse.enums.OrderType;
 import uz.ataboyev.warehouse.enums.Type;
+import uz.ataboyev.warehouse.service.base.BaseService;
 
 import java.sql.Timestamp;
 
@@ -19,10 +22,13 @@ import java.sql.Timestamp;
 public class OrderPageDTO {
 
    private Timestamp date;
-   private ClientResDto clientResDto;
-   private Double orderPrice;
-   private CurrencyType currencyType;
+   private ClientDtoForPageable clientDto;
+   private Double orderPriceSum;
+   private Double orderPriceDollar;
    private OrderType type;
+
+
+
 
 
 

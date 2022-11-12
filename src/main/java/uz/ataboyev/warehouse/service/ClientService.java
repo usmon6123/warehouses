@@ -1,9 +1,6 @@
 package uz.ataboyev.warehouse.service;
 
-import uz.ataboyev.warehouse.payload.ApiResult;
-import uz.ataboyev.warehouse.payload.ClientReqDto;
-import uz.ataboyev.warehouse.payload.ClientResDto;
-import uz.ataboyev.warehouse.payload.OptionResDto;
+import uz.ataboyev.warehouse.payload.*;
 
 import java.util.List;
 
@@ -25,5 +22,7 @@ public interface ClientService {
 
 
     List<OptionResDto> getClientsForOption();
+
+    List<ClientHistoryDto> clientHistory(Long clientId);
 
 }

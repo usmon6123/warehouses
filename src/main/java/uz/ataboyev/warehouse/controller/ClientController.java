@@ -28,5 +28,7 @@ public interface ClientController {
     @DeleteMapping("/delete/{clientId}")
     ApiResult<?> delete(@PathVariable Long clientId);
 
+    @GetMapping("client-history/{clientId}")
+    List<ClientHistoryDto>clientHistory(Long clientId);
 
 }

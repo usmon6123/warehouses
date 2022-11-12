@@ -23,6 +23,6 @@ public class OptionResDto {
     }
 
     public static OptionResDto make(Client client) {
-        return new OptionResDto(client.getId(),client.getFullName());
+        return new OptionResDto(client.getId(),client.getName());
     }
 }
