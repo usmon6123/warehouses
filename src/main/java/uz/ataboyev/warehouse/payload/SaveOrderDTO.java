@@ -29,5 +29,6 @@ public class SaveOrderDTO {
 
     private String description;
 
-
+    @NotNull(message = "warehouseId_not_null")
+    private Long warehouseId;
 }
