@@ -91,8 +91,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderPriceDto> generalPriceOrders() {
-        //todo Jonibek
-        return null;
+        ArrayList<OrderPriceDto> list = new ArrayList<>();
+        list.add(new OrderPriceDto(78560340D,128000D));
+        return list;
     }
 
 

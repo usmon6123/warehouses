@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"name", "phone_number"})})
 public class Client extends AbsLongEntity {
 
-    @Column(nullable = false, name = "client_type")
+    @Column(nullable = false, name = " client_type")
     @Enumerated(EnumType.STRING)
     private Type clientType;
 

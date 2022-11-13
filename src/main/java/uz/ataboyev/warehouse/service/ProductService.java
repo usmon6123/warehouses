@@ -1,9 +1,6 @@
 package uz.ataboyev.warehouse.service;
 
-import uz.ataboyev.warehouse.payload.ApiResult;
-import uz.ataboyev.warehouse.payload.OptionResDto;
-import uz.ataboyev.warehouse.payload.ProductReqDto;
-import uz.ataboyev.warehouse.payload.ProductResDto;
+import uz.ataboyev.warehouse.payload.*;
 
 import java.util.List;
 
@@ -23,4 +20,5 @@ public interface ProductService {
 
     void checkingProductByIdListOrElseThrow(List<Long> productIdList);
 
+    List<ProductResDtoByWhId> getAllProductByWarehouseId(Long warehouseId);
 }

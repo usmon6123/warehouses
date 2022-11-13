@@ -5,10 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uz.ataboyev.warehouse.entity.Product;
 import uz.ataboyev.warehouse.exception.RestException;
-import uz.ataboyev.warehouse.payload.ApiResult;
-import uz.ataboyev.warehouse.payload.OptionResDto;
-import uz.ataboyev.warehouse.payload.ProductReqDto;
-import uz.ataboyev.warehouse.payload.ProductResDto;
+import uz.ataboyev.warehouse.payload.*;
 import uz.ataboyev.warehouse.repository.ProductRepository;
 import uz.ataboyev.warehouse.service.base.BaseService;
 
@@ -57,9 +54,7 @@ public class ProductServiceImpl implements ProductService {
 
         List<Product> productList = productRepository.findAllByCategoryId(categoryId);
 
-        List<ProductResDto> productResDtos = productList.stream().map(ProductResDto::makeDTO).collect(Collectors.toList());
-
-        return productResDtos;
+        return productList.stream().map(ProductResDto::makeDTO).collect(Collectors.toList());
     }
 
     @Override
@@ -68,6 +63,16 @@ public class ProductServiceImpl implements ProductService {
         return productList.stream().map(OptionResDto::make).collect(Collectors.toList());
     }
 
+
+    @Override
+    public List<ProductResDtoByWhId> getAllProductByWarehouseId(Long warehouseId) {
+        List<ProductResDtoByWhIdImpl> products =
+                productRepository.getProductByWarehouseId(warehouseId);
+        for (ProductResDtoByWhIdImpl product : products) {
+            System.out.println(product.getCount());
+        }
+        return products.stream().map(ProductResDtoByWhId::makeDTO).collect(Collectors.toList());
+    }
 
     @Override
     public ApiResult<?> edit(Long productId, ProductReqDto productReqDto) {

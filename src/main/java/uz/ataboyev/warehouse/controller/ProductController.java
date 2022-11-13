@@ -19,6 +19,10 @@ public interface ProductController {
     @GetMapping("/get-all-product-by-categoryId/{categoryId}")
     List<ProductResDto> getAllProductByCategoryId(@PathVariable Long categoryId);
 
+    @GetMapping("/get-all-product-by-warehouse-id/{warehouseId}")
+    List<ProductResDtoByWhId> getAllProductByWarehouseId(@PathVariable Long warehouseId);
+
+
     @GetMapping("/get-products-for-option-by-categoryId/{categoryId}")
     List<OptionResDto> getProductsForOption(@PathVariable Long categoryId);
 

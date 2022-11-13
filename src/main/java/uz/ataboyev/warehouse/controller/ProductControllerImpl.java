@@ -29,6 +29,11 @@ public class ProductControllerImpl implements ProductController {
     }
 
     @Override
+    public List<ProductResDtoByWhId> getAllProductByWarehouseId(Long warehouseId) {
+        return productService.getAllProductByWarehouseId(warehouseId);
+    }
+
+    @Override
     public List<OptionResDto> getProductsForOption(Long categoryId) {
         return productService.getProductsForOptionByCategoryId(categoryId);
     }
