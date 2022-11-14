@@ -1,4 +1,4 @@
-package uz.ataboyev.warehouse.payload;
+package uz.ataboyev.warehouse.payload.clientDtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

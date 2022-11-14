@@ -4,13 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.hibernate.type.CurrencyType;
-import uz.ataboyev.warehouse.entity.Client;
-import uz.ataboyev.warehouse.entity.Order;
 import uz.ataboyev.warehouse.enums.OrderType;
-import uz.ataboyev.warehouse.enums.Type;
-import uz.ataboyev.warehouse.service.base.BaseService;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientDtoForPageable;
 
 import java.sql.Timestamp;
 

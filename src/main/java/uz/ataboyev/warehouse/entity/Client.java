@@ -3,7 +3,7 @@ package uz.ataboyev.warehouse.entity;
 import lombok.*;
 import uz.ataboyev.warehouse.entity.template.AbsLongEntity;
 import uz.ataboyev.warehouse.enums.Type;
-import uz.ataboyev.warehouse.payload.ClientReqDto;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientReqDto;
 
 import javax.persistence.*;
 

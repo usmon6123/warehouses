@@ -1,6 +1,10 @@
 package uz.ataboyev.warehouse.service;
 
 import uz.ataboyev.warehouse.payload.*;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientBalanceResDto;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientHistoryDto;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientReqDto;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientResDto;
 
 import java.util.List;
 
@@ -25,4 +29,5 @@ public interface ClientService {
 
     List<ClientHistoryDto> clientHistory(Long clientId);
 
+    List<ClientBalanceResDto> getClientsBalance(Long warehouseId);
 }

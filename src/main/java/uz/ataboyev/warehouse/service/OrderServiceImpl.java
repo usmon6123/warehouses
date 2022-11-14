@@ -5,8 +5,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import uz.ataboyev.warehouse.entity.Order;
 import uz.ataboyev.warehouse.entity.OrderItem;
 import uz.ataboyev.warehouse.entity.Product;
@@ -14,6 +14,7 @@ import uz.ataboyev.warehouse.enums.CurrencyTypeEnum;
 import uz.ataboyev.warehouse.enums.OrderType;
 import uz.ataboyev.warehouse.exception.RestException;
 import uz.ataboyev.warehouse.payload.*;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientDtoForPageable;
 import uz.ataboyev.warehouse.repository.OrderItemRepository;
 import uz.ataboyev.warehouse.repository.OrderRepository;
 import uz.ataboyev.warehouse.service.base.BaseService;
@@ -54,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public ApiResult<?> addOrder(SaveOrderDTO orderDTO) {
 
-        //product id va client idlarni haqiqatdan bazada mavjudligini soradi
+        //warehouse id, product id va client idlarni haqiqatdan bazada mavjudligini soradi
         checkingOrderDTO(orderDTO);
 
         List<OrderItemDto> orderItemDtoList = orderDTO.getOrderItemDtoList();
@@ -70,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
 
         orderItemListSaved(orderItemList);
 
-        //PRODUCTLARNI BAZADAGI SONLARINI O'ZGARTIRIB QO'YDI
+        //PRODUCTLARNI BAZADAGI SONLARINI O'ZGARTIRIB SAQLAB QO'YDI
         editProductCount(orderDTO.getOrderType(), orderItemList);
         return ApiResult.successResponse(" Order muvaffaqiyatli saqlandi");
     }
@@ -156,6 +157,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private void checkingOrderDTO(SaveOrderDTO orderDTO) {
+
+        if (!baseService.existsWarehouse(orderDTO.getWarehouseId()))throw RestException.restThrow("SAVDONI SAQLAMOQCHI BO'LGAN OMBORXONA TOPILMADI", HttpStatus.NOT_FOUND);
 
         List<Long> productIds = orderDTO.getOrderItemDtoList().stream().map(OrderItemDto::getProductId).collect(Collectors.toList());
         productService.checkingProductByIdListOrElseThrow(productIds);

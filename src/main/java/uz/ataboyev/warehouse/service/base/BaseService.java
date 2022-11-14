@@ -8,13 +8,9 @@ import uz.ataboyev.warehouse.entity.Company;
 import uz.ataboyev.warehouse.entity.Product;
 import uz.ataboyev.warehouse.entity.Warehouse;
 import uz.ataboyev.warehouse.exception.RestException;
-import uz.ataboyev.warehouse.payload.ClientResDto;
-import uz.ataboyev.warehouse.payload.WareHouseReqDto;
 import uz.ataboyev.warehouse.repository.*;
-import uz.ataboyev.warehouse.service.ClientService;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor

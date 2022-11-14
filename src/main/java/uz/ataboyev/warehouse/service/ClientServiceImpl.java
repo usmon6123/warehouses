@@ -8,13 +8,13 @@ import uz.ataboyev.warehouse.entity.OrderItem;
 import uz.ataboyev.warehouse.enums.CurrencyTypeEnum;
 import uz.ataboyev.warehouse.exception.RestException;
 import uz.ataboyev.warehouse.payload.*;
+import uz.ataboyev.warehouse.payload.clientDtos.*;
 import uz.ataboyev.warehouse.repository.ClientRepository;
 import uz.ataboyev.warehouse.repository.OrderItemRepository;
 import uz.ataboyev.warehouse.service.base.BaseService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Service
@@ -87,6 +87,12 @@ public class ClientServiceImpl implements ClientService{
         ClientHistoryDto clientHistoryDto = mapClientHistoryDto(clientItems);
 
         return List.of(clientHistoryDto);
+    }
+
+    @Override
+    public List<ClientBalanceResDto> getClientsBalance(Long warehouseId) {
+        List<ClientBalance> allClientBalance = clientRepository.getALLClientBalance(warehouseId);
+        return ClientBalanceResDto.makeList(allClientBalance);
     }
 
     @Override

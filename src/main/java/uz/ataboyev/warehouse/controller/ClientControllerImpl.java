@@ -3,8 +3,9 @@ package uz.ataboyev.warehouse.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import uz.ataboyev.warehouse.payload.ApiResult;
-import uz.ataboyev.warehouse.payload.ClientHistoryDto;
-import uz.ataboyev.warehouse.payload.ClientReqDto;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientBalanceResDto;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientHistoryDto;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientReqDto;
 import uz.ataboyev.warehouse.payload.OptionResDto;
 import uz.ataboyev.warehouse.service.ClientService;
 
@@ -50,5 +51,10 @@ public class ClientControllerImpl implements ClientController{
     @Override
     public List<ClientHistoryDto> clientHistory(Long clientId) {
         return clientService.clientHistory(clientId);
+    }
+
+    @Override
+    public List<ClientBalanceResDto> getClientsBalance(Long warehouseId) {
+        return clientService.getClientsBalance(warehouseId);
     }
 }

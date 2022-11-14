@@ -2,6 +2,9 @@ package uz.ataboyev.warehouse.controller;
 
 import org.springframework.web.bind.annotation.*;
 import uz.ataboyev.warehouse.payload.*;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientBalanceResDto;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientHistoryDto;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientReqDto;
 import uz.ataboyev.warehouse.utils.RestConstant;
 
 import javax.validation.Valid;
@@ -30,5 +33,8 @@ public interface ClientController {
 
     @GetMapping("client-history/{clientId}")
     List<ClientHistoryDto>clientHistory(Long clientId);
+
+    @GetMapping("clients-balance-by-wh-id/{warehouseId}")
+    List<ClientBalanceResDto> getClientsBalance(Long warehouseId);
 
 }
