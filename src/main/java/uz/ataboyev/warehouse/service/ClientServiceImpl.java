@@ -150,10 +150,8 @@ public class ClientServiceImpl implements ClientService {
     }
 
     private ClientOrderDto mapClientOrderDto(OrderItem orderItem) {
-        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        Date date = new Date(orderItem.getUpdatedAt().getTime());
-        String dateFormat = formatter.format(date);
 
+        String dateFormat = baseService.timestampToString_dd_MM_yyyy(orderItem.getUpdatedAt());
 
         return new ClientOrderDto(
                 dateFormat,

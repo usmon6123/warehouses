@@ -7,9 +7,14 @@ import uz.ataboyev.warehouse.entity.Client;
 import uz.ataboyev.warehouse.entity.Company;
 import uz.ataboyev.warehouse.entity.Product;
 import uz.ataboyev.warehouse.entity.Warehouse;
+import uz.ataboyev.warehouse.enums.Type;
 import uz.ataboyev.warehouse.exception.RestException;
 import uz.ataboyev.warehouse.repository.*;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -25,29 +30,31 @@ public class BaseService {
     public static final Double minus1 = -1D;
 
 
-
     public Warehouse getWarehouseByIdElseThrow(Long whId) {
         return warehouseRepository.findById(whId).orElseThrow(() -> RestException.notFound("Warehouse not found"));
     }
 
-    public boolean existsWarehouse(Long wHId){
+    public boolean existsWarehouse(Long wHId) {
         return warehouseRepository.existsById(wHId);
     }
-    public boolean existsWarehouseByCompId(Long compId){
+
+    public boolean existsWarehouseByCompId(Long compId) {
         return warehouseRepository.existsByCompanyId(compId);
     }
 
-    public boolean existsCompany(Long compId){
+    public boolean existsCompany(Long compId) {
         return companyRepository.existsById(compId);
     }
 
-    public Company getCompanyById(Long id){
+    public Company getCompanyById(Long id) {
         return companyRepository.findById(id).orElseThrow(() -> RestException.notFound("Company not found"));
     }
-     public boolean checkingClientByPhoneNumber(String phoneNumber){
+
+    public boolean checkingClientByPhoneNumber(String phoneNumber) {
         return clientRepository.existsByPhoneNumber(phoneNumber);
-     }
-    public boolean checkingClientById(Long id){
+    }
+
+    public boolean checkingClientById(Long id) {
         return clientRepository.existsById(id);
     }
 
@@ -60,13 +67,13 @@ public class BaseService {
         return clientRepository.existsById(clientId);
     }
 
-    public void checkOrdersOfClient(Long clientId){
+    public void checkOrdersOfClient(Long clientId) {
         if (orderRepository.existsByClientId(clientId)) {
             throw RestException.restThrow("Bu mijozni o'chira olmaysiz, uning oldi berdilari bo'lgan ekan siz bn", HttpStatus.CONFLICT);
         }
     }
 
-    public boolean checkCategoryById(Long categoryId){
+    public boolean checkCategoryById(Long categoryId) {
         return categoryRepository.existsById(categoryId);
     }
 
@@ -74,14 +81,28 @@ public class BaseService {
         return productRepository.findById(productId).orElseThrow(() -> RestException.restThrow("Product mavjudmas"));
     }
 
-    public void savedProductList(List<Product> productList){
-        try{
+    public void savedProductList(List<Product> productList) {
+        try {
             productRepository.saveAll(productList);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw RestException.restThrow("Mahsulotlarni saqlashda muommo boldi");
         }
     }
 
 
+    public String timestampToString_dd_MM_yyyy(Timestamp date) {
+        return new SimpleDateFormat("dd-MM-yyyy").format(date);
+    }
+
+    public Long getBossId() {
+        try {
+            //todo dabdala bo'lyatr sho'ri, lekin zarari deymadi hech yerda :)
+            Client client = clientRepository.findByClientType(Type.BOSS).orElse(new Client(Type.OTHER,"TEST MIJOZ","*******"));
+            return client.getId();
+        }catch (Exception e){
+            e.printStackTrace();
+            return 0L;
+        }
+    }
 }

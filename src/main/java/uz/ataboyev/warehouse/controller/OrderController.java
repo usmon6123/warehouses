@@ -5,19 +5,19 @@ import uz.ataboyev.warehouse.payload.*;
 import uz.ataboyev.warehouse.utils.RestConstant;
 
 import javax.validation.Valid;
-
 import java.util.List;
 
-import static uz.ataboyev.warehouse.utils.AppConstant.*;
+import static uz.ataboyev.warehouse.utils.AppConstant.DEFAULT_PAGE_NUMBER;
+import static uz.ataboyev.warehouse.utils.AppConstant.DEFAULT_PAGE_SIZE;
 
 @RequestMapping(path = OrderController.ORDER_CONTROLLER)
 public interface OrderController {
 
-    String ORDER_CONTROLLER=RestConstant.BASE_PATH+"/order";
+    String ORDER_CONTROLLER = RestConstant.BASE_PATH + "/order";
 
 
-    @GetMapping("/by-order")
-    ApiResult<?> byOrder(Long whId,Long categoryId);
+    @GetMapping("/by-order/{whId}/{categoryId}")
+    ApiResult<?> byOrder(@PathVariable Long whId, @PathVariable Long categoryId);
 
 
     @PostMapping("/add-order")
@@ -29,10 +29,10 @@ public interface OrderController {
 
     @GetMapping("get-all-orders-pageable")
     List<CustomPage<OrderPageDTO>> getAllPageable(@RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) int page,
-                                                 @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size);
-    @GetMapping("general-price-orders")
-    List<OrderPriceDto>generalPriceOrders();
+                                                  @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size);
 
+    @GetMapping("general-price-orders/{whId}")
+    OrderPriceDto generalPriceOrders(@PathVariable Long whId);
 
 
 }

@@ -35,8 +35,8 @@ public class OrderControllerImpl implements OrderController {
     }
 
     @Override
-    public List<OrderPriceDto> generalPriceOrders() {
-        return orderService.generalPriceOrders();
+    public OrderPriceDto generalPriceOrders(Long whId) {
+        return orderService.generalPriceOrders(whId);
     }
 
 

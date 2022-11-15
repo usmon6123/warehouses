@@ -4,9 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import uz.ataboyev.warehouse.entity.Client;
+import uz.ataboyev.warehouse.enums.Type;
 import uz.ataboyev.warehouse.payload.clientDtos.ClientBalance;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ClientRepository extends JpaRepository<Client,Long> {
     boolean existsByPhoneNumber(String phoneNumber);
@@ -27,6 +29,7 @@ public interface ClientRepository extends JpaRepository<Client,Long> {
             "group by c.name,c.id, c.client_type order by c.name",nativeQuery = true)
     List<ClientBalance> getALLClientBalance(@Param("warehouseId")Long warehouseId);
 
+    Optional<Client> findByClientType(Type clientType);
 
 //    @SqlResultSetMapping(name = "mapClientHistoryDto",
 //            classes = @ConstructorResult(targetClass = ClientHistoryDto.class,columns = )

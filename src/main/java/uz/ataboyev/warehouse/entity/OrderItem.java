@@ -54,7 +54,7 @@ public class OrderItem extends AbsLongEntity {
         this.amount = amount;
     }
 
-    public static List<OrderItem> makeList(List<OrderItemDto> orderItemDtoList, Long orderId,OrderType orderType) {
+    public static List<OrderItem> makeList(List<OrderItemDto> orderItemDtoList, Long orderId, OrderType orderType) {
 
         return orderItemDtoList.stream().map(orderItemDto -> make(orderItemDto, orderId, orderType))
                 .collect(Collectors.toList());
@@ -67,9 +67,9 @@ public class OrderItem extends AbsLongEntity {
         return new OrderItem(
                 orderId,
                 orderItemDto.getProductId(),
-                orderItemDto.getCount(),
+                a * orderItemDto.getCount(),
                 orderItemDto.getCurrencyTypeEnum(),
-                orderItemDto.getAmount() * a
+                orderItemDto.getAmount()
         );
     }
 }

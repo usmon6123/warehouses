@@ -63,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
         Order order = Order.make(orderDTO);
         Order order1 = saveOrder(order);
         System.out.println(order1.getId());
-        List<OrderItem> orderItemList = OrderItem.makeList(orderItemDtoList, order1.getId(),order1.getType());
+        List<OrderItem> orderItemList = OrderItem.makeList(orderItemDtoList, order1.getId(), order1.getType());
 
         //SAVDODAGI BARCHA MAXSULOTLARNI NARHINI YIG'IBERADI SUM VA DOLLARNI ADDENNI QILIB
         OrderPriceDto orderPriceDto = calculationOrderPrice(orderItemList);
@@ -91,45 +91,48 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderPriceDto> generalPriceOrders() {
+    public OrderPriceDto generalPriceOrders(Long whId) {
         ArrayList<OrderPriceDto> list = new ArrayList<>();
-        list.add(new OrderPriceDto(78560340D,128000D));
-        return list;
+        Long bossId = baseService.getBossId();
+        Double sum, dollar;
+
+        OrderPriceDtoForRep orderPriceDtoForRep = orderRepository.orderPriceByWhId(bossId, whId);
+        dollar = orderPriceDtoForRep.getDollar() == null ? 0D : Double.parseDouble(orderPriceDtoForRep.getDollar());
+        sum = orderPriceDtoForRep.getSum() == null ? 0D : Double.parseDouble(orderPriceDtoForRep.getSum());
+        return OrderPriceDto.make(sum, dollar);
     }
-
-
 
 
 //    --------------------------------- HELPER METHOD -----------------------------------------
 
     private CustomPage<OrderPageDTO> orderPageDTOCustomPage(Page<Order> orderPage) {
 
-    List<OrderPageDTO> collect = new ArrayList<>();
-    List<Order> orderList = orderPage.getContent();
+        List<OrderPageDTO> collect = new ArrayList<>();
+        List<Order> orderList = orderPage.getContent();
 
-    //HAR BIR ORDERNI ORDERPAGEGA O'GIRIB COLLECTGA YIG'IBERADI
-    for (Order order : orderList) {
+        //HAR BIR ORDERNI ORDERPAGEGA O'GIRIB COLLECTGA YIG'IBERADI
+        for (Order order : orderList) {
 
-        //ORDER ICHIDAN CLIENTNI MALUMOTLARINI DTOGA ORABERADI
-        ClientDtoForPageable clientDto = ClientDtoForPageable.make(order.getClient());
+            //ORDER ICHIDAN CLIENTNI MALUMOTLARINI DTOGA ORABERADI
+            ClientDtoForPageable clientDto = ClientDtoForPageable.make(order.getClient());
 
-        collect.add(new OrderPageDTO(
-                order.getUpdatedAt(),
-                clientDto,
-                order.getOrderPriceSum(),
-                order.getOrderPriceDollar(),
-                order.getType()));
+            collect.add(new OrderPageDTO(
+                    order.getUpdatedAt(),
+                    clientDto,
+                    order.getOrderPriceSum(),
+                    order.getOrderPriceDollar(),
+                    order.getType()));
+        }
+
+        return new CustomPage<>(
+                collect,
+                orderPage.getNumberOfElements(),// Elementlar
+                orderPage.getNumber(), // Current page dagi elementlar soni
+                orderPage.getTotalElements(), // Current page number
+                orderPage.getTotalPages(), // Barcha elementlar soni
+                orderPage.getSize() //Barcha page lar soni
+        );
     }
-
-    return new CustomPage<>(
-            collect,
-            orderPage.getNumberOfElements(),// Elementlar
-            orderPage.getNumber(), // Current page dagi elementlar soni
-            orderPage.getTotalElements(), // Current page number
-            orderPage.getTotalPages(), // Barcha elementlar soni
-            orderPage.getSize() //Barcha page lar soni
-    );
-}
 
     private void editProductCount(OrderType orderType, List<OrderItem> orderItemList) {
         try {
@@ -158,7 +161,8 @@ public class OrderServiceImpl implements OrderService {
 
     private void checkingOrderDTO(SaveOrderDTO orderDTO) {
 
-        if (!baseService.existsWarehouse(orderDTO.getWarehouseId()))throw RestException.restThrow("SAVDONI SAQLAMOQCHI BO'LGAN OMBORXONA TOPILMADI", HttpStatus.NOT_FOUND);
+        if (!baseService.existsWarehouse(orderDTO.getWarehouseId()))
+            throw RestException.restThrow("SAVDONI SAQLAMOQCHI BO'LGAN OMBORXONA TOPILMADI", HttpStatus.NOT_FOUND);
 
         List<Long> productIds = orderDTO.getOrderItemDtoList().stream().map(OrderItemDto::getProductId).collect(Collectors.toList());
         productService.checkingProductByIdListOrElseThrow(productIds);
@@ -202,6 +206,7 @@ public class OrderServiceImpl implements OrderService {
             throw RestException.restThrow("Order no saved");
         }
     }
+
     private Order saveOrder(Order order) {
         try {
 

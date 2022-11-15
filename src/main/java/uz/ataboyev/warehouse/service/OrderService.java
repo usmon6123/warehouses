@@ -14,6 +14,6 @@ public interface OrderService {
 
     List<CustomPage<OrderPageDTO>> getOrdersPageable(int page, int size);
 
-    List<OrderPriceDto> generalPriceOrders();
+    OrderPriceDto generalPriceOrders(Long whId);
 
 }
