@@ -56,7 +56,8 @@ public class OrderItem extends AbsLongEntity {
 
     public static List<OrderItem> makeList(List<OrderItemDto> orderItemDtoList, Long orderId,OrderType orderType) {
 
-        return orderItemDtoList.stream().map(orderItemDto -> make(orderItemDto, orderId, orderType)).collect(Collectors.toList());
+        return orderItemDtoList.stream().map(orderItemDto -> make(orderItemDto, orderId, orderType))
+                .collect(Collectors.toList());
 
     }
 

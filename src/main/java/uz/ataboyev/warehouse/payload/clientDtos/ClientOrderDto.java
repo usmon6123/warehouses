@@ -13,7 +13,7 @@ import java.util.List;
 public class ClientOrderDto {
 
     @NotNull(message = "date")
-    private Timestamp date;
+    private String date;
 
     @NotNull(message = "categoryId_not_null")
     private String categoryName;

@@ -7,19 +7,23 @@ import uz.ataboyev.warehouse.entity.Client;
 import uz.ataboyev.warehouse.entity.OrderItem;
 import uz.ataboyev.warehouse.enums.CurrencyTypeEnum;
 import uz.ataboyev.warehouse.exception.RestException;
-import uz.ataboyev.warehouse.payload.*;
+import uz.ataboyev.warehouse.payload.ApiResult;
+import uz.ataboyev.warehouse.payload.OptionResDto;
 import uz.ataboyev.warehouse.payload.clientDtos.*;
 import uz.ataboyev.warehouse.repository.ClientRepository;
 import uz.ataboyev.warehouse.repository.OrderItemRepository;
 import uz.ataboyev.warehouse.service.base.BaseService;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class ClientServiceImpl implements ClientService{
+public class ClientServiceImpl implements ClientService {
 
     private final ClientRepository clientRepository;
     private final OrderItemRepository orderItemRepository;
@@ -36,7 +40,7 @@ public class ClientServiceImpl implements ClientService{
 
         ClientResDto clientResDto = mapClient(client);
 
-        return ApiResult.successResponse(clientResDto,"success aded");
+        return ApiResult.successResponse(clientResDto, "success aded");
     }
 
     @Override
@@ -46,10 +50,10 @@ public class ClientServiceImpl implements ClientService{
         Client client = baseService.getClientById(clientId);
 
         //YANGI TEL RAQAM BAZADA MAVJUD BO'LSA THROW
-        if (clientRepository.existsByPhoneNumberAndIdNot(clientReqDto.getPhoneNumber(),client.getId()))
-            throw new RestException("Yangi kiritgan raqamiz bazada mavjudligi uchun boshqa raqam kiriting!",HttpStatus.CONFLICT);
+        if (clientRepository.existsByPhoneNumberAndIdNot(clientReqDto.getPhoneNumber(), client.getId()))
+            throw new RestException("Yangi kiritgan raqamiz bazada mavjudligi uchun boshqa raqam kiriting!", HttpStatus.CONFLICT);
 
-        Client saveClient = Client.updateClient(client,clientReqDto);
+        Client saveClient = Client.updateClient(client, clientReqDto);
 
         saveClient(saveClient);
 
@@ -74,6 +78,7 @@ public class ClientServiceImpl implements ClientService{
         List<ClientResDto> clientResDtos = mapClients(clientList);
         return ApiResult.successResponse(clientResDtos);
     }
+
     @Override
     public List<OptionResDto> getClientsForOption() {
         List<Client> clientList = clientRepository.findAll();
@@ -119,7 +124,7 @@ public class ClientServiceImpl implements ClientService{
     public void checkingClientByIdListOrElseThrow(List<Long> clientIdList) {
         for (Long id : clientIdList) {
             if (!clientRepository.existsById(id))
-                throw new RestException("Bu mijozni biz bazadan topa olmadik",HttpStatus.NOT_FOUND);
+                throw new RestException("Bu mijozni biz bazadan topa olmadik", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -129,31 +134,38 @@ public class ClientServiceImpl implements ClientService{
     private ClientHistoryDto mapClientHistoryDto(List<OrderItem> clientItems) {
         Double sum = 0D;
         Double dollar = 0D;
-        List<ClientOrderDto>list = new ArrayList<>();
+        List<ClientOrderDto> list = new ArrayList<>();
         for (OrderItem clientItem : clientItems) {
 
             ClientOrderDto clientOrderDto = mapClientOrderDto(clientItem);
 
             if (clientItem.getCurrencyType().equals(CurrencyTypeEnum.SUM))
-                sum+=clientOrderDto.getPrice();
+                sum += clientOrderDto.getPrice();
             else dollar += clientOrderDto.getPrice();
 
             list.add(clientOrderDto);
         }
 
-        return new ClientHistoryDto(list,sum,dollar);
+        return new ClientHistoryDto(list, sum, dollar);
     }
-    private ClientOrderDto mapClientOrderDto(OrderItem orderItem){
+
+    private ClientOrderDto mapClientOrderDto(OrderItem orderItem) {
+        DateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+        Date date = new Date(orderItem.getUpdatedAt().getTime());
+        String dateFormat = formatter.format(date);
+
+
         return new ClientOrderDto(
-                orderItem.getUpdatedAt(),
+                dateFormat,
                 orderItem.getProduct().getCategory().getName(),
                 orderItem.getProduct().getName(),
                 orderItem.getCount(),
                 orderItem.getAmount(),
                 orderItem.getCurrencyType(),
-                orderItem.getAmount()*orderItem.getCount()
+                orderItem.getAmount() * orderItem.getCount()
         );
     }
+
     private void checkingClientByPhoneNumberOrElseThrow(String phoneNumber) {
         if (clientRepository.existsByPhoneNumber(phoneNumber))
             throw RestException.restThrow("Bu raqamli mijoz bazada mavjud", HttpStatus.CONFLICT);
@@ -162,12 +174,11 @@ public class ClientServiceImpl implements ClientService{
     private void saveClient(Client client) {
         try {
             clientRepository.save(client);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw RestException.restThrow("Client not saved");
         }
     }
-
 
 
     //CLIENTDAN DTO YASABERADI

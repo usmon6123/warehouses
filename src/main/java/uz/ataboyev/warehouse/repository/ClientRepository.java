@@ -24,7 +24,7 @@ public interface ClientRepository extends JpaRepository<Client,Long> {
             "SUM(o.order_price_sum) as balanceSum from client c " +
             "inner join orders o on c.id = o.client_id " +
             "where (o.warehouse_id = :warehouseId) " +
-            "group by c.name,c.id, c.client_type",nativeQuery = true)
+            "group by c.name,c.id, c.client_type order by c.name",nativeQuery = true)
     List<ClientBalance> getALLClientBalance(@Param("warehouseId")Long warehouseId);
 
 
