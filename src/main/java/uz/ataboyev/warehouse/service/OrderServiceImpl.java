@@ -15,6 +15,7 @@ import uz.ataboyev.warehouse.enums.OrderType;
 import uz.ataboyev.warehouse.exception.RestException;
 import uz.ataboyev.warehouse.payload.*;
 import uz.ataboyev.warehouse.payload.clientDtos.ClientDtoForPageable;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientOrderDto;
 import uz.ataboyev.warehouse.repository.OrderItemRepository;
 import uz.ataboyev.warehouse.repository.OrderRepository;
 import uz.ataboyev.warehouse.service.base.BaseService;
@@ -62,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = Order.make(orderDTO);
         Order order1 = saveOrder(order);
-        System.out.println(order1.getId());
+
         List<OrderItem> orderItemList = OrderItem.makeList(orderItemDtoList, order1.getId(), order1.getType());
 
         //SAVDODAGI BARCHA MAXSULOTLARNI NARHINI YIG'IBERADI SUM VA DOLLARNI ADDENNI QILIB
@@ -78,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public ApiResult<?> getAllOrder(SaveOrderDTO orderDTO) {
+    public ApiResult<?> getAllOrder() {
         return null;
     }
 
@@ -100,6 +101,11 @@ public class OrderServiceImpl implements OrderService {
         dollar = orderPriceDtoForRep.getDollar() == null ? 0D : Double.parseDouble(orderPriceDtoForRep.getDollar());
         sum = orderPriceDtoForRep.getSum() == null ? 0D : Double.parseDouble(orderPriceDtoForRep.getSum());
         return OrderPriceDto.make(sum, dollar);
+    }
+
+    @Override
+    public List<ClientOrderDto> getOrderItemsOneById(Long orderId) {
+        return baseService.getOrderItemListByOrderId(orderId);
     }
 
 

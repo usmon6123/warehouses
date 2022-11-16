@@ -3,6 +3,7 @@ package uz.ataboyev.warehouse.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 import uz.ataboyev.warehouse.payload.*;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientOrderDto;
 import uz.ataboyev.warehouse.service.OrderService;
 
 import java.util.List;
@@ -15,8 +16,8 @@ public class OrderControllerImpl implements OrderController {
 
 
     @Override
-    public ApiResult<?> byOrder(Long whId,Long categoryId) {
-        return orderService.byOrder(whId,categoryId);
+    public ApiResult<?> byOrder(Long whId, Long categoryId) {
+        return orderService.byOrder(whId, categoryId);
     }
 
     @Override
@@ -25,13 +26,18 @@ public class OrderControllerImpl implements OrderController {
     }
 
     @Override
-    public ApiResult<?> getAllOrder(SaveOrderDTO orderDTO) {
-        return orderService.getAllOrder(orderDTO);
+    public List<ClientOrderDto> getOrderItemsOneById(Long orderId) {
+        return orderService.getOrderItemsOneById(orderId);
+    }
+
+    @Override
+    public ApiResult<?> getAllOrder() {
+        return orderService.getAllOrder();
     }
 
     @Override
     public List<CustomPage<OrderPageDTO>> getAllPageable(int page, int size) {
-        return orderService.getOrdersPageable(page,size);
+        return orderService.getOrdersPageable(page, size);
     }
 
     @Override

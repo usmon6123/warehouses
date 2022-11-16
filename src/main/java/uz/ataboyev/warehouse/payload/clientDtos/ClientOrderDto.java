@@ -9,7 +9,9 @@ import javax.validation.constraints.NotNull;
 import java.sql.Timestamp;
 import java.util.List;
 
-@AllArgsConstructor@NoArgsConstructor@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class ClientOrderDto {
 
     @NotNull(message = "date")
@@ -31,7 +33,18 @@ public class ClientOrderDto {
     private CurrencyTypeEnum currencyTypeEnum;
 
     @NotNull(message = "price_not_null")
-    private Double price ;//count * countSum
+    private Double price;//count * countSum
 
 
+    public static ClientOrderDto make(OrderItemByOrderId orderItemByOrderId) {
+        return new ClientOrderDto(
+                orderItemByOrderId.getDate(),
+                orderItemByOrderId.getCategoryName(),
+                orderItemByOrderId.getProductName(),
+                Double.parseDouble(orderItemByOrderId.getCount()),
+                Double.parseDouble(orderItemByOrderId.getCountSum()),
+                CurrencyTypeEnum.valueOf(orderItemByOrderId.getCurrencyTypeEnum()),
+                Double.parseDouble(orderItemByOrderId.getPrice())
+        );
+    }
 }

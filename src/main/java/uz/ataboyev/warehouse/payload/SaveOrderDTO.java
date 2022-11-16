@@ -1,6 +1,7 @@
 package uz.ataboyev.warehouse.payload;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.ataboyev.warehouse.enums.OrderType;
@@ -13,7 +14,7 @@ import java.util.List;
 
 
 @Data
-//@AllArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class SaveOrderDTO {

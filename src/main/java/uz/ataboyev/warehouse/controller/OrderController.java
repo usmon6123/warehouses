@@ -2,6 +2,7 @@ package uz.ataboyev.warehouse.controller;
 
 import org.springframework.web.bind.annotation.*;
 import uz.ataboyev.warehouse.payload.*;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientOrderDto;
 import uz.ataboyev.warehouse.utils.RestConstant;
 
 import javax.validation.Valid;
@@ -23,9 +24,11 @@ public interface OrderController {
     @PostMapping("/add-order")
     ApiResult<?> addOrder(@RequestBody @Valid SaveOrderDTO orderDTO);
 
+    @GetMapping("/get-one/{orderId}")
+    List<ClientOrderDto> getOrderItemsOneById(@PathVariable Long orderId);
 
     @GetMapping("/get-all-order")
-    ApiResult<?> getAllOrder(@RequestBody @Valid SaveOrderDTO orderDTO);
+    ApiResult<?> getAllOrder();//BU YO'L YOZILMAGAN
 
     @GetMapping("get-all-orders-pageable")
     List<CustomPage<OrderPageDTO>> getAllPageable(@RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) int page,

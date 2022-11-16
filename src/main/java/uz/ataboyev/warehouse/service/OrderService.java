@@ -1,6 +1,7 @@
 package uz.ataboyev.warehouse.service;
 
 import uz.ataboyev.warehouse.payload.*;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientOrderDto;
 
 import java.util.List;
 
@@ -10,10 +11,11 @@ public interface OrderService {
 
     ApiResult<?> addOrder(SaveOrderDTO orderDTO);
 
-    ApiResult<?> getAllOrder(SaveOrderDTO orderDTO);
+    ApiResult<?> getAllOrder();
 
     List<CustomPage<OrderPageDTO>> getOrdersPageable(int page, int size);
 
     OrderPriceDto generalPriceOrders(Long whId);
 
+    List<ClientOrderDto>  getOrderItemsOneById(Long orderId);
 }
