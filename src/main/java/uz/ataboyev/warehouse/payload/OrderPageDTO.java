@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderPageDTO {
-
+   private Long orderId;
    private String date;
    private ClientDtoForPageable clientDto;
    private Double orderPriceSum;

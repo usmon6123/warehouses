@@ -123,6 +123,7 @@ public class OrderServiceImpl implements OrderService {
             ClientDtoForPageable clientDto = ClientDtoForPageable.make(order.getClient());
             date = baseService.timestampToString_dd_MM_yyyy(order.getUpdatedAt());
             collect.add(new OrderPageDTO(
+                    order.getId(),
                     date,
                     clientDto,
                     order.getOrderPriceSum(),
