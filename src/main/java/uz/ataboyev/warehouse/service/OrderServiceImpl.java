@@ -84,9 +84,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<CustomPage<OrderPageDTO>> getOrdersPageable(int page, int size) {
+    public List<CustomPage<OrderPageDTO>> getOrdersPageable(int page, int size, Long warehouseId) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
-        Page<Order> orderPage = orderRepository.findAll(pageable);
+        Page<Order> orderPage = orderRepository.findAllByWarehouseIdOrderByUpdatedAtDesc(warehouseId, pageable);
         CustomPage<OrderPageDTO> orderPageDTOCustomPage = orderPageDTOCustomPage(orderPage);
         return List.of(orderPageDTOCustomPage);
     }
@@ -115,15 +115,15 @@ public class OrderServiceImpl implements OrderService {
 
         List<OrderPageDTO> collect = new ArrayList<>();
         List<Order> orderList = orderPage.getContent();
-
+        String date = "";
         //HAR BIR ORDERNI ORDERPAGEGA O'GIRIB COLLECTGA YIG'IBERADI
         for (Order order : orderList) {
 
             //ORDER ICHIDAN CLIENTNI MALUMOTLARINI DTOGA ORABERADI
             ClientDtoForPageable clientDto = ClientDtoForPageable.make(order.getClient());
-
+            date = baseService.timestampToString_dd_MM_yyyy(order.getUpdatedAt());
             collect.add(new OrderPageDTO(
-                    order.getUpdatedAt(),
+                    date,
                     clientDto,
                     order.getOrderPriceSum(),
                     order.getOrderPriceDollar(),

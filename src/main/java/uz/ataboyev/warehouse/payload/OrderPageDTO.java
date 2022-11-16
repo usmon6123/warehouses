@@ -16,7 +16,7 @@ import java.sql.Timestamp;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderPageDTO {
 
-   private Timestamp date;
+   private String date;
    private ClientDtoForPageable clientDto;
    private Double orderPriceSum;
    private Double orderPriceDollar;

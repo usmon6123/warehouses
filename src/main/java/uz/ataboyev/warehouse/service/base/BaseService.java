@@ -100,8 +100,8 @@ public class BaseService {
     public Long getBossId() {
         try {
             //todo dabdala bo'lyatr sho'ri, lekin zarari deymadi hech yerda :)
-            Client client = clientRepository.findByClientType(Type.BOSS).orElse(new Client(Type.OTHER,"TEST MIJOZ","*******"));
-            return client.getId();
+//            Client client = clientRepository.findByClientType(Type.BOSS).orElse(new Client(Type.OTHER,"TEST MIJOZ","*******"));
+            return 0l;
         }catch (Exception e){
             e.printStackTrace();
             return 0L;

@@ -30,9 +30,10 @@ public interface OrderController {
     @GetMapping("/get-all-order")
     ApiResult<?> getAllOrder();//BU YO'L YOZILMAGAN
 
-    @GetMapping("get-all-orders-pageable")
+    @GetMapping("get-all-orders-pageable/{warehouseId}")
     List<CustomPage<OrderPageDTO>> getAllPageable(@RequestParam(defaultValue = DEFAULT_PAGE_NUMBER) int page,
-                                                  @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size);
+                                                  @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int size,
+                                                  @PathVariable Long warehouseId);
 
     @GetMapping("general-price-orders/{whId}")
     OrderPriceDto generalPriceOrders(@PathVariable Long whId);
