@@ -28,7 +28,8 @@ public class Order extends AbsLongEntity {
     @Enumerated(EnumType.STRING)
     private OrderType type;
 
-    private String description;
+    @Column(columnDefinition = "text")
+    private String description = " ";
 
     //umumiy jamlangan summa bitta savdodagi
     private Double orderPriceSum = 0D;

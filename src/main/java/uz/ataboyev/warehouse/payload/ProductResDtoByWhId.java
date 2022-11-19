@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor@NoArgsConstructor@Data
 public class ProductResDtoByWhId {
 
+    private Long productId;
     private String categoryName;
     private String productName;
     private String code;
@@ -17,6 +18,7 @@ public class ProductResDtoByWhId {
 
     public static ProductResDtoByWhId makeDTO(ProductResDtoByWhIdImpl productImpl) {
         return new ProductResDtoByWhId(
+                Long.parseLong(productImpl.getProductId()),
                 productImpl.getCategoryName(),
                 productImpl.getProductName(),
                 productImpl.getCode(),

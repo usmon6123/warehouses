@@ -17,5 +17,5 @@ public interface OrderService {
 
     OrderPriceDto generalPriceOrders(Long whId);
 
-    List<ClientOrderDto>  getOrderItemsOneById(Long orderId);
+    OneOrderHistoryDto  getOrderItemsOneById(Long orderId);
 }

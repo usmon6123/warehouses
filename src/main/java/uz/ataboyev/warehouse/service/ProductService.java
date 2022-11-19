@@ -21,4 +21,8 @@ public interface ProductService {
     void checkingProductByIdListOrElseThrow(List<Long> productIdList);
 
     List<ProductResDtoByWhId> getAllProductByWarehouseId(Long warehouseId);
+
+    List<GetCodesForProductDto> getCodesForProduct(String productName);
+
+    List<ProductResDtoByWhId> littleProductsByWarehouseId(Long whId);
 }

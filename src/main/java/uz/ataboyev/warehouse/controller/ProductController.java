@@ -26,10 +26,18 @@ public interface ProductController {
     @GetMapping("/get-products-for-option-by-categoryId/{categoryId}")
     List<OptionResDto> getProductsForOption(@PathVariable Long categoryId);
 
+    @GetMapping("get-codes-by-product-name/{productName}")
+    List<GetCodesForProductDto>getCodesForProduct(@PathVariable String productName);
+
+    //MIN COUNTIDAN KAM QOLGAN MAXSULOTLAR RO'YHATINI CHIQARADI
+    @GetMapping("get-little-products/{whId}")
+    List<ProductResDtoByWhId> littleProductsByWarehouseId(@PathVariable Long whId);
+
     @PutMapping("/edit/{productId}")
     ApiResult<?> edit(@PathVariable Long productId, @RequestBody @Valid ProductReqDto productReqDto);
 
     @DeleteMapping("/delete/{productId}")
     ApiResult<?> delete(@PathVariable Long productId);
+
 
 }

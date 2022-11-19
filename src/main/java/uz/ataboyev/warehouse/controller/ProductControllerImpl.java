@@ -38,6 +38,16 @@ public class ProductControllerImpl implements ProductController {
         return productService.getProductsForOptionByCategoryId(categoryId);
     }
 
+    @Override
+    public List<GetCodesForProductDto> getCodesForProduct(String productName) {
+        return productService.getCodesForProduct(productName);
+    }
+
+    @Override
+    public List<ProductResDtoByWhId> littleProductsByWarehouseId(Long whId) {
+        return productService.littleProductsByWarehouseId(whId);
+    }
+
 
     @Override
     public ApiResult<?> edit(Long productId, ProductReqDto productReqDto) {

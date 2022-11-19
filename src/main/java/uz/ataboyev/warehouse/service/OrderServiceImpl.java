@@ -22,6 +22,7 @@ import uz.ataboyev.warehouse.service.base.BaseService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static uz.ataboyev.warehouse.service.base.BaseService.minus1;
@@ -62,18 +63,21 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItemDto> orderItemDtoList = orderDTO.getOrderItemDtoList();
 
         Order order = Order.make(orderDTO);
+
         Order order1 = saveOrder(order);
 
         List<OrderItem> orderItemList = OrderItem.makeList(orderItemDtoList, order1.getId(), order1.getType());
 
+        //PRODUCTLARNI BAZADAGI SONLARINI O'ZGARTIRIB SAQLAB QO'YDI
+        editProductCount(orderItemList);
+
         //SAVDODAGI BARCHA MAXSULOTLARNI NARHINI YIG'IBERADI SUM VA DOLLARNI ADDENNI QILIB
         OrderPriceDto orderPriceDto = calculationOrderPrice(orderItemList);
+
         saveOrder(order, orderPriceDto);
 
         orderItemListSaved(orderItemList);
 
-        //PRODUCTLARNI BAZADAGI SONLARINI O'ZGARTIRIB SAQLAB QO'YDI
-        editProductCount(orderDTO.getOrderType(), orderItemList);
         return ApiResult.successResponse(" Order muvaffaqiyatli saqlandi");
     }
 
@@ -85,7 +89,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<CustomPage<OrderPageDTO>> getOrdersPageable(int page, int size, Long warehouseId) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
         Page<Order> orderPage = orderRepository.findAllByWarehouseIdOrderByUpdatedAtDesc(warehouseId, pageable);
         CustomPage<OrderPageDTO> orderPageDTOCustomPage = orderPageDTOCustomPage(orderPage);
         return List.of(orderPageDTOCustomPage);
@@ -104,8 +108,15 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<ClientOrderDto> getOrderItemsOneById(Long orderId) {
-        return baseService.getOrderItemListByOrderId(orderId);
+    public OneOrderHistoryDto getOrderItemsOneById(Long orderId) {
+
+        List<ClientOrderDto> listOrderItems = baseService.getOrderItemListByOrderId(orderId);
+
+        Optional<GetDescriptionByOrderId> optionalDescription = orderRepository.getDescriptionById(orderId);
+        String description = optionalDescription.isEmpty()?" ":optionalDescription.get().getDescription();
+
+
+        return new OneOrderHistoryDto(listOrderItems,description);
     }
 
 
@@ -122,6 +133,7 @@ public class OrderServiceImpl implements OrderService {
             //ORDER ICHIDAN CLIENTNI MALUMOTLARINI DTOGA ORABERADI
             ClientDtoForPageable clientDto = ClientDtoForPageable.make(order.getClient());
             date = baseService.timestampToString_dd_MM_yyyy(order.getUpdatedAt());
+
             collect.add(new OrderPageDTO(
                     order.getId(),
                     date,
@@ -141,19 +153,20 @@ public class OrderServiceImpl implements OrderService {
         );
     }
 
-    private void editProductCount(OrderType orderType, List<OrderItem> orderItemList) {
+    private void editProductCount(List<OrderItem> orderItemList) {
         try {
             double a = 1D, databaseCount;
             ArrayList<Product> productList = new ArrayList<>();
-
-            //AGAR ORDER CHIQIM BO'LSA
-            if (orderType.name().equals("EXPENDITURE")) a = minus1;
 
             for (OrderItem orderItem : orderItemList) {
 
                 Product product = baseService.getProductById(orderItem.getProductId());
 
                 databaseCount = product.getCount() + a * orderItem.getCount();
+
+                //HARIDOR OLMOQCHI BO'LGAN MIQDORDA BAZADA MAHSULOT BORLIGINI TEKSHIRADI
+                if (databaseCount<0)throw RestException.restThrow(product.getName() + " mahsulotidan omborda " + product.getCount() +" dona qolgan holos ");
+
                 product.setCount(databaseCount);
 
                 productList.add(product);

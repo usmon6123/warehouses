@@ -12,11 +12,15 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"name", "code"})
+})
 public class Product extends AbsLongEntity {
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String code;
 
     private Double minCount;//miqdor shundan kamysa sms jo'natadi

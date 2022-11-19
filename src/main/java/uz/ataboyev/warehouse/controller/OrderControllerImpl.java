@@ -26,7 +26,7 @@ public class OrderControllerImpl implements OrderController {
     }
 
     @Override
-    public List<ClientOrderDto> getOrderItemsOneById(Long orderId) {
+    public OneOrderHistoryDto getOrderItemsOneById(Long orderId) {
         return orderService.getOrderItemsOneById(orderId);
     }
 

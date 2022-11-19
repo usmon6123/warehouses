@@ -157,10 +157,12 @@ public class ClientServiceImpl implements ClientService {
                 dateFormat,
                 orderItem.getProduct().getCategory().getName(),
                 orderItem.getProduct().getName(),
+                orderItem.getProduct().getCode(),
                 orderItem.getCount(),
                 orderItem.getAmount(),
                 orderItem.getCurrencyType(),
-                orderItem.getAmount() * orderItem.getCount()
+                orderItem.getAmount() * orderItem.getCount(),
+                orderItem.getPayTypeEnum()
         );
     }
 

@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import uz.ataboyev.warehouse.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
+import uz.ataboyev.warehouse.payload.GetCodesForProduct;
 import uz.ataboyev.warehouse.payload.ProductResDtoByWhIdImpl;
 
 import java.util.Collection;
@@ -31,6 +32,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
     @Query(value = "select " +
+            "cast (p.id as varchar) as productId, " +
             "c.name as categoryName, " +
             "p.name as productName, " +
             "p.code as code, " +
@@ -38,6 +40,24 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "from product p " +
             "inner join category c on c.id = p.category_id" +
             " where p.category_id in (" +
-            "        select c.id from category c where c.warehouse_id = :whId)",nativeQuery = true)
+            "        select c.id from category c where c.warehouse_id = :whId)" +
+            " order by p.updated_at desc ", nativeQuery = true)
     List<ProductResDtoByWhIdImpl> getProductByWarehouseId(@Param("whId") Long whId);
+
+
+    @Query(value = "select cast(p.id as varchar) as productId," +
+            "       c.name                as categoryName," +
+            "       p.name                as productName," +
+            "       p.code                as code," +
+            "       p.count               as count " +
+            "from product p " +
+            "         inner join category c on c.id = p.category_id " +
+            "where c.warehouse_id = :whId and p.count<= p.min_count order by p.count ASC  ",
+            nativeQuery = true)
+    List<ProductResDtoByWhIdImpl> getLittleProductByWarehouseId(@Param("whId") Long whId);
+
+
+    @Query(value = "select cast (p.id as varchar )as id,p.code as code from product p where p.name = :name order by p.code ASC", nativeQuery = true)
+    List<GetCodesForProduct> getCodesForProduct(@Param("name") String name);
+
 }

@@ -68,10 +68,23 @@ public class ProductServiceImpl implements ProductService {
     public List<ProductResDtoByWhId> getAllProductByWarehouseId(Long warehouseId) {
         List<ProductResDtoByWhIdImpl> products =
                 productRepository.getProductByWarehouseId(warehouseId);
-        for (ProductResDtoByWhIdImpl product : products) {
-            System.out.println(product.getCount());
-        }
+
         return products.stream().map(ProductResDtoByWhId::makeDTO).collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<ProductResDtoByWhId> littleProductsByWarehouseId(Long whId) {
+        List<ProductResDtoByWhIdImpl> products =
+                productRepository.getLittleProductByWarehouseId(whId);
+        return products.stream().map(ProductResDtoByWhId::makeDTO).collect(Collectors.toList());
+    }
+
+    //PRODUCTNI NOMINI BERIB YUBORISH ORQALI SHU NOMLI PRODUCTLARNING CODELARINI OLIB KELADI
+    @Override
+    public List<GetCodesForProductDto> getCodesForProduct(String productName) {
+        List<GetCodesForProduct> productCodes = productRepository.getCodesForProduct(productName);
+        return productCodes.stream().map(GetCodesForProductDto::make).collect(Collectors.toList());
     }
 
     @Override

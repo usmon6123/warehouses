@@ -7,6 +7,7 @@ import uz.ataboyev.warehouse.entity.Product;
 
 public interface ProductResDtoByWhIdImpl {
 
+    String getProductId();
     String getCategoryName();
     String getProductName();
     String getCode();

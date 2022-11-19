@@ -4,10 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import uz.ataboyev.warehouse.enums.CurrencyTypeEnum;
+import uz.ataboyev.warehouse.enums.PayTypeEnum;
 
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
-import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,6 +22,9 @@ public class ClientOrderDto {
     @NotNull(message = "productId_not_null")
     private String productName;
 
+    @NotNull(message = "code_not_null")
+    private String code;
+
     @NotNull(message = "count_not_null")
     private Double count;
 
@@ -35,16 +37,22 @@ public class ClientOrderDto {
     @NotNull(message = "price_not_null")
     private Double price;//count * countSum
 
+    @NotNull(message = "pay_type_enum_not_null")
+    private PayTypeEnum payTypeEnum;
+
+//    private String description;
 
     public static ClientOrderDto make(OrderItemByOrderId orderItemByOrderId) {
         return new ClientOrderDto(
                 orderItemByOrderId.getDate(),
                 orderItemByOrderId.getCategoryName(),
                 orderItemByOrderId.getProductName(),
+                orderItemByOrderId.getCode(),
                 Double.parseDouble(orderItemByOrderId.getCount()),
                 Double.parseDouble(orderItemByOrderId.getCountSum()),
                 CurrencyTypeEnum.valueOf(orderItemByOrderId.getCurrencyTypeEnum()),
-                Double.parseDouble(orderItemByOrderId.getPrice())
-        );
+                Double.parseDouble(orderItemByOrderId.getPrice()),
+                PayTypeEnum.valueOf(orderItemByOrderId.getPayType())
+                );
     }
 }

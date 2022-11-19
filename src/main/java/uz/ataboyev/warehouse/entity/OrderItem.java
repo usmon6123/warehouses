@@ -4,6 +4,7 @@ import lombok.*;
 import uz.ataboyev.warehouse.entity.template.AbsLongEntity;
 import uz.ataboyev.warehouse.enums.CurrencyTypeEnum;
 import uz.ataboyev.warehouse.enums.OrderType;
+import uz.ataboyev.warehouse.enums.PayTypeEnum;
 import uz.ataboyev.warehouse.payload.OrderItemDto;
 
 import javax.persistence.*;
@@ -38,20 +39,25 @@ public class OrderItem extends AbsLongEntity {
     @Column(nullable = false)
     private Double count;
 
-    @JoinColumn(nullable = false)
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private CurrencyTypeEnum currencyType;
 
     @Column(nullable = false)
     private Double amount;//dona summasi
 
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PayTypeEnum payTypeEnum;//to'lov turi
 
-    public OrderItem(Long orderId, Long productId, Double count, CurrencyTypeEnum currencyType, Double amount) {
+
+    public OrderItem(Long orderId, Long productId, Double count, CurrencyTypeEnum currencyType, Double amount, PayTypeEnum payTypeEnum) {
         this.orderId = orderId;
         this.productId = productId;
         this.count = count;
         this.currencyType = currencyType;
         this.amount = amount;
+        this.payTypeEnum = payTypeEnum;
     }
 
     public static List<OrderItem> makeList(List<OrderItemDto> orderItemDtoList, Long orderId, OrderType orderType) {
@@ -69,7 +75,8 @@ public class OrderItem extends AbsLongEntity {
                 orderItemDto.getProductId(),
                 a * orderItemDto.getCount(),
                 orderItemDto.getCurrencyTypeEnum(),
-                orderItemDto.getAmount()
+                orderItemDto.getAmount(),
+                orderItemDto.getPayTypeEnum()
         );
     }
 }

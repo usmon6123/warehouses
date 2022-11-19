@@ -25,7 +25,7 @@ public interface OrderController {
     ApiResult<?> addOrder(@RequestBody @Valid SaveOrderDTO orderDTO);
 
     @GetMapping("/get-one/{orderId}")
-    List<ClientOrderDto> getOrderItemsOneById(@PathVariable Long orderId);
+    OneOrderHistoryDto getOrderItemsOneById(@PathVariable Long orderId);
 
     @GetMapping("/get-all-order")
     ApiResult<?> getAllOrder();//BU YO'L YOZILMAGAN

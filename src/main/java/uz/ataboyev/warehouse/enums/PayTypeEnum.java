@@ -1,8 +1,9 @@
 package uz.ataboyev.warehouse.enums;
 
 public enum PayTypeEnum {
-    CASH,
-    TRANSFER,
-    CARD,
-    DEBT;
+    CASH, //naqt pul kassa
+    TRANSFER, //hisobga pul o'tkazish
+    CARD, //plastik karta
+    DEBT, //qarz
+    BOSS; //ho'jayinni o'zi savdo qilganda
 }
