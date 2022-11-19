@@ -18,4 +18,7 @@ public interface OrderService {
     OrderPriceDto generalPriceOrders(Long whId);
 
     OneOrderHistoryDto  getOrderItemsOneById(Long orderId);
+
+    OrderPriceDtoForPayTypeRes getPriceAmountByPayType(Long whId);
+
 }

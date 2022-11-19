@@ -12,7 +12,7 @@ public class OrderPriceDto {
     private Double dollar;
 
 
-    public static OrderPriceDto make(Double sum,Double dollar) {
-        return new OrderPriceDto(sum,dollar);
+    public static OrderPriceDto make(Double sum, Double dollar) {
+        return new OrderPriceDto(sum, dollar);
     }
 }

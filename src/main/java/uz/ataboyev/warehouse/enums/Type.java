@@ -8,5 +8,7 @@ public enum Type {
 
     OTHER, // BOSHQA
 
+    WORKER,//ISHCHILAR
+
     BOSS //HO'JAYIN
 }

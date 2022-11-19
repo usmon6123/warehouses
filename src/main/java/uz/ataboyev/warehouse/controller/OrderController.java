@@ -38,5 +38,7 @@ public interface OrderController {
     @GetMapping("general-price-orders/{whId}")
     OrderPriceDto generalPriceOrders(@PathVariable Long whId);
 
+    @GetMapping("/get-price-pay-type/{whId}")
+    OrderPriceDtoForPayTypeRes getPriceAmountByPayType(@PathVariable Long whId);
 
 }

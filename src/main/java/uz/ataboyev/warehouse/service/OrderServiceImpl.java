@@ -119,6 +119,18 @@ public class OrderServiceImpl implements OrderService {
         return new OneOrderHistoryDto(listOrderItems,description);
     }
 
+    @Override
+    public OrderPriceDtoForPayTypeRes getPriceAmountByPayType(Long whId) {
+        ArrayList<OrderPriceDtoForPayType> orderPriceByType = new ArrayList<>();
+        //todo sho'rda jarlik bo :)
+        List<OrderPriceForPayType> allPriceByType = orderItemRepository.getAllPriceByType(whId);
+
+        for (OrderPriceForPayType priceForPayType : allPriceByType) {
+
+        }
+        return null;
+    }
+
 
 //    --------------------------------- HELPER METHOD -----------------------------------------
 

@@ -45,5 +45,10 @@ public class OrderControllerImpl implements OrderController {
         return orderService.generalPriceOrders(whId);
     }
 
+    @Override
+    public OrderPriceDtoForPayTypeRes getPriceAmountByPayType(Long whId) {
+        return orderService.getPriceAmountByPayType(whId);
+    }
+
 
 }

@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import uz.ataboyev.warehouse.entity.OrderItem;
+import uz.ataboyev.warehouse.payload.OrderPriceDtoForPayType;
+import uz.ataboyev.warehouse.payload.OrderPriceForPayType;
 import uz.ataboyev.warehouse.payload.clientDtos.OrderItemByOrderId;
 
 import java.util.List;
@@ -32,4 +34,15 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
             "where oi.order_id = :orderId " +
             "order by oi.created_at desc", nativeQuery = true)
     List<OrderItemByOrderId> findAllByOrderId(Long orderId);
+
+
+    //TO'LOV TURI VA VALYUTA BO'YICHA GURUHLAB UMUMIY BALANSNI YIG'IB KELYABDI
+    @Query(value = "select oi.pay_type_enum as payType, " +
+            "       oi.currency_type as currencyType, " +
+            "       sum(oi.count*oi.amount) as price from order_item oi " +
+            "inner join orders o on o.id = oi.order_id " +
+            "where o.warehouse_id = :whId " +
+            "group by currencyType,payType order by payType",
+            nativeQuery = true)
+    List<OrderPriceForPayType> getAllPriceByType(Long whId);
 }
