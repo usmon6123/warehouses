@@ -49,7 +49,7 @@ public class ClientControllerImpl implements ClientController{
     }
 
     @Override
-    public List<ClientHistoryDto> clientHistory(Long clientId) {
+    public ClientHistoryDto clientHistory(Long clientId) {
         return clientService.clientHistory(clientId);
     }
 

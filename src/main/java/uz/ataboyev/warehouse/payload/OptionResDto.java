@@ -14,6 +14,10 @@ public class OptionResDto {
 
     private String name;
 
+    public OptionResDto(String name) {
+        this.name = name;
+    }
+
     public static OptionResDto make(Product product) {
         return new OptionResDto(product.getId(),product.getName());
     }
@@ -24,5 +28,9 @@ public class OptionResDto {
 
     public static OptionResDto make(Client client) {
         return new OptionResDto(client.getId(),client.getName());
+    }
+
+    public static OptionResDto make(OptionResIn optionResIn) {
+        return new OptionResDto(optionResIn.getName());
     }
 }

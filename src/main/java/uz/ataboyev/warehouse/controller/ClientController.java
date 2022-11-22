@@ -32,7 +32,7 @@ public interface ClientController {
     ApiResult<?> delete(@PathVariable Long clientId);
 
     @GetMapping("client-history/{clientId}")
-    List<ClientHistoryDto>clientHistory(Long clientId);
+    ClientHistoryDto clientHistory(Long clientId);
 
     @GetMapping("clients-balance-by-wh-id/{warehouseId}")
     List<ClientBalanceResDto> getClientsBalance(Long warehouseId);

@@ -5,6 +5,7 @@ import org.springframework.data.repository.query.Param;
 import uz.ataboyev.warehouse.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import uz.ataboyev.warehouse.payload.GetCodesForProduct;
+import uz.ataboyev.warehouse.payload.OptionResIn;
 import uz.ataboyev.warehouse.payload.ProductResDtoByWhIdImpl;
 
 import java.util.Collection;
@@ -23,6 +24,11 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
 
     List<Product> findAllByCategoryId(Long categoryId);
+
+    @Query(value = "select distinct p.name  from product p " +
+            "where p.category_id =:categoryId",nativeQuery = true)
+    List<OptionResIn> findDistinctByCategoryId(@Param("categoryId") Long categoryId);
+
 
 
     @Query(value = "select p.* from product p where p.category_id in (" +

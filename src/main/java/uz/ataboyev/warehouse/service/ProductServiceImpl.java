@@ -59,7 +59,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<OptionResDto> getProductsForOptionByCategoryId(Long categoryId) {
-        List<Product> productList = productRepository.findAllByCategoryId(categoryId);
+        List<OptionResIn> productList = productRepository.findDistinctByCategoryId(categoryId);
         return productList.stream().map(OptionResDto::make).collect(Collectors.toList());
     }
 

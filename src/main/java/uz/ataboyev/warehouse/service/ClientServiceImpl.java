@@ -86,12 +86,12 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public List<ClientHistoryDto> clientHistory(Long clientId) {
+    public ClientHistoryDto clientHistory(Long clientId) {
 
         List<OrderItem> clientItems = orderItemRepository.findAllByOrder_ClientId(clientId);
         ClientHistoryDto clientHistoryDto = mapClientHistoryDto(clientItems);
 
-        return List.of(clientHistoryDto);
+        return clientHistoryDto;
     }
 
     @Override

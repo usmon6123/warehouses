@@ -27,7 +27,7 @@ public interface ClientService {
 
     List<OptionResDto> getClientsForOption();
 
-    List<ClientHistoryDto> clientHistory(Long clientId);
+    ClientHistoryDto clientHistory(Long clientId);
 
     List<ClientBalanceResDto> getClientsBalance(Long warehouseId);
 }
