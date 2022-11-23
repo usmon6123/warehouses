@@ -17,9 +17,14 @@ public class ClientDtoForPageable {
 
     private String name;
 
+    private String phoneNumber;
+
 
     public static ClientDtoForPageable make(Client client) {
-        return new ClientDtoForPageable(client.getId(),client.getClientType(), client.getName());
-
+        return new ClientDtoForPageable(
+                client.getId(),
+                client.getClientType(),
+                client.getName(),
+                client.getPhoneNumber());
     }
 }

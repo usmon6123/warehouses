@@ -27,8 +27,8 @@ public class ProductServiceImpl implements ProductService {
         if (!baseService.checkCategoryById(productReqDto.getCategoryId()))
             throw RestException.restThrow("Mahsulotning kategoriyasi topilmadi", HttpStatus.NOT_FOUND);
 
-        if (productRepository.existsByName(productReqDto.getName()))
-            throw RestException.restThrow("Bu nomli mahsulot mavjud", HttpStatus.CONFLICT);
+        if (productRepository.existsByNameAndCode(productReqDto.getName(), productReqDto.getCode()))
+            throw RestException.restThrow("Bu mahsulot bizda mavjud", HttpStatus.CONFLICT);
 
         Product product = Product.make(productReqDto);
 

@@ -1,12 +1,14 @@
 package uz.ataboyev.warehouse.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.Synchronized;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import uz.ataboyev.warehouse.entity.Order;
 import uz.ataboyev.warehouse.entity.OrderItem;
 import uz.ataboyev.warehouse.entity.Product;
@@ -26,7 +28,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static uz.ataboyev.warehouse.enums.CurrencyTypeEnum.*;
+import static uz.ataboyev.warehouse.enums.CurrencyTypeEnum.SUM;
 import static uz.ataboyev.warehouse.enums.PayTypeEnum.*;
 
 
@@ -56,7 +58,7 @@ public class OrderServiceImpl implements OrderService {
         return ApiResult.successResponse(result);
     }
 
-    @Override
+    @Override@Transactional
     public ApiResult<?> addOrder(SaveOrderDTO orderDTO) {
 
         //warehouse id, product id va client idlarni haqiqatdan bazada mavjudligini soradi
@@ -80,7 +82,7 @@ public class OrderServiceImpl implements OrderService {
 
         orderItemListSaved(orderItemList);
 
-        return ApiResult.successResponse(" Order muvaffaqiyatli saqlandi");
+        return ApiResult.successResponse("savdo muvaffaqiyatli saqlandi");
     }
 
 
@@ -122,91 +124,114 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderPriceDtoForPayTypeRes getPriceAmountByPayType(Long whId) {
-//        ArrayList<OrderPriceDtoForPayType> orderPriceByType = new ArrayList<>();
-        double allSum = 0D, allDollar = 0D, sum = 0D, dollar = 0D;
+        ArrayList<OrderPriceDtoForPayType> orderPriceByType = new ArrayList<>();
+        double allSum = 0D, allDollar = 0D;
+        int countCASH = 0, countCARD = 0, countTRANSFER = 0, countDEBT = 0, countBOSS = 0;
         HashMap<PayTypeEnum, HashMap<String, Double>> hashMap = new HashMap<>();
 
         List<OrderPriceForPayType> allPriceByType = orderItemRepository.getAllPriceByType(whId);
-        List<OrderPriceDtoForPayType> orderPriceByType = allPriceByType.stream().map(OrderPriceDtoForPayType::make).collect(Collectors.toList());
-        for (OrderPriceDtoForPayType forPayType : orderPriceByType) {
-            if (forPayType.getType().equals(SUM))allSum+=forPayType.getPrice();
-            else allDollar+=forPayType.getPrice();
-        }
-//        HashMap<String, Double> mapCASH = new HashMap<>();mapCASH.put(CASH.toString(),0D);
-//        HashMap<String, Double> mapTRANSFER = new HashMap<>();mapCASH.put(TRANSFER.toString(),0D);
-//        HashMap<String, Double> mapCARD = new HashMap<>();mapCASH.put(CARD.toString(),0D);
-//        HashMap<String, Double> mapBOSS = new HashMap<>();mapCASH.put(BOSS.toString(),0D);
-//        HashMap<String, Double> mapDEBT = new HashMap<>();mapCASH.put(DEBT.toString(),0D);
-//
-//        for (OrderPriceForPayType priceForPayType : allPriceByType) {
-//            switch (priceForPayType.getPayType()) {
-//                case "CASH":
-//                    mapCASH.put(priceForPayType.getCurrencyType(), Double.parseDouble(priceForPayType.getPrice()));
-//                    hashMap.put(CASH, mapCASH);
-//
-//                    //UMUMIY BALANSNI HISOBLASH UCHUN
-//                    if (priceForPayType.getCurrencyType().equals(SUM.toString()))
-//                        allSum += Double.parseDouble(priceForPayType.getPrice());
-//                    else allDollar += Double.parseDouble(priceForPayT
-//                    break;
-//
-//                case "CARD":
-//                    mapCARD.put(priceForPayType.getCurrencyType(), Double.parseDouble(priceForPayType.getPrice()));
-//                    hashMap.put(PayTypeEnum.CARD, mapCARD);
-//
-//                    //UMUMIY BALANSNI HISOBLASH UCHUN
-//                    if (priceForPayType.getCurrencyType().equals(SUM.toString()))
-//                        allSum += Double.parseDouble(priceForPayType.getPrice());
-//                    else allDollar += Double.parseDouble(priceForPayType.getPrice());
-//                    break;
-//                case "BOSS":
-//                    mapBOSS.put(priceForPayType.getCurrencyType(), Double.parseDouble(priceForPayType.getPrice()));
-//                    hashMap.put(PayTypeEnum.BOSS, mapBOSS);
-//
-//                    //UMUMIY BALANSNI HISOBLASH UCHUN
-//                    if (priceForPayType.getCurrencyType().equals(SUM.toString()))
-//                        allSum += Double.parseDouble(priceForPayType.getPrice());
-//                    else allDollar += Double.parseDouble(priceForPayType.getPrice());
-//                    break;
-//                case "DEBT":
-//                    mapDEBT.put(priceForPayType.getCurrencyType(), Double.parseDouble(priceForPayType.getPrice()));
-//                    hashMap.put(DEBT, mapDEBT);
-//
-//                    //UMUMIY BALANSNI HISOBLASH UCHUN
-//                    if (priceForPayType.getCurrencyType().equals(SUM.toString()))
-//                        allSum += Double.parseDouble(priceForPayType.getPrice());
-//                    else allDollar += Double.parseDouble(priceForPayType.getPrice());
-//                    break;
-//            }
+//        List<OrderPriceDtoForPayType> orderPriceByType = allPriceByType.stream().map(OrderPriceDtoForPayType::make).collect(Collectors.toList());
+//        for (OrderPriceDtoForPayType forPayType : orderPriceByType) {
+//            if (forPayType.getType().equals(SUM))allSum+=forPayType.getPrice();
+//            else allDollar+=forPayType.getPrice();
 //        }
-//        //CASH UCHUN
-//        orderPriceByType.add(new OrderPriceDtoForPayType(
-//                CASH,
-//                hashMap.get(CASH).get("SUM"),
-//                hashMap.get(CASH).get("DOLLAR")
-//        ));
-//        orderPriceByType.add(new OrderPriceDtoForPayType(
-//                CARD,
-//                hashMap.get(CARD).get("SUM"),
-//                hashMap.get(CARD).get("DOLLAR")
-//        ));
-//
-//        orderPriceByType.add(new OrderPriceDtoForPayType(
-//                TRANSFER,
-//                hashMap.get(TRANSFER).get("SUM"),
-//                hashMap.get(TRANSFER).get("DOLLAR")
-//        ));
-//        orderPriceByType.add(new OrderPriceDtoForPayType(
-//                BOSS,
-//                hashMap.get(BOSS).get("SUM"),
-//                hashMap.get(BOSS).get("DOLLAR")
-//        ));
-//        orderPriceByType.add(new OrderPriceDtoForPayType(
-//                DEBT,
-//                hashMap.get(DEBT).get("SUM"),
-//                hashMap.get(DEBT).get("DOLLAR")
-//        ));
-//
+
+
+        HashMap<String, Double> mapCASH = new HashMap<>();
+        mapCASH.put(CASH.toString(), 0D);
+        HashMap<String, Double> mapTRANSFER = new HashMap<>();
+        mapCASH.put(TRANSFER.toString(), 0D);
+        HashMap<String, Double> mapCARD = new HashMap<>();
+        mapCASH.put(CARD.toString(), 0D);
+        HashMap<String, Double> mapBOSS = new HashMap<>();
+        mapCASH.put(BOSS.toString(), 0D);
+        HashMap<String, Double> mapDEBT = new HashMap<>();
+        mapCASH.put(DEBT.toString(), 0D);
+
+        for (OrderPriceForPayType priceForPayType : allPriceByType) {
+            switch (priceForPayType.getPayType()) {
+                case "CASH":
+                    mapCASH.put(priceForPayType.getCurrencyType(), Double.parseDouble(priceForPayType.getPrice()));
+                    hashMap.put(CASH, mapCASH);
+
+                    //UMUMIY BALANSNI HISOBLASH UCHUN
+                    if (priceForPayType.getCurrencyType().equals(SUM.toString()))
+                        allSum += Double.parseDouble(priceForPayType.getPrice());
+                    else allDollar += Double.parseDouble(priceForPayType.getPrice());
+                    countCASH++;
+                    break;
+
+                case "CARD":
+                    mapCARD.put(priceForPayType.getCurrencyType(), Double.parseDouble(priceForPayType.getPrice()));
+                    hashMap.put(PayTypeEnum.CARD, mapCARD);
+
+                    //UMUMIY BALANSNI HISOBLASH UCHUN
+                    if (priceForPayType.getCurrencyType().equals(SUM.toString()))
+                        allSum += Double.parseDouble(priceForPayType.getPrice());
+                    else allDollar += Double.parseDouble(priceForPayType.getPrice());
+                    countCARD++;
+                    break;
+                case "TRANSFER":
+                    mapCARD.put(priceForPayType.getCurrencyType(), Double.parseDouble(priceForPayType.getPrice()));
+                    hashMap.put(TRANSFER, mapTRANSFER);
+
+                    //UMUMIY BALANSNI HISOBLASH UCHUN
+                    if (priceForPayType.getCurrencyType().equals(SUM.toString()))
+                        allSum += Double.parseDouble(priceForPayType.getPrice());
+                    else allDollar += Double.parseDouble(priceForPayType.getPrice());
+                    countTRANSFER++;
+                    break;
+
+                case "BOSS":
+                    mapBOSS.put(priceForPayType.getCurrencyType(), Double.parseDouble(priceForPayType.getPrice()));
+                    hashMap.put(PayTypeEnum.BOSS, mapBOSS);
+
+                    //UMUMIY BALANSNI HISOBLASH UCHUN
+                    if (priceForPayType.getCurrencyType().equals(SUM.toString()))
+                        allSum += Double.parseDouble(priceForPayType.getPrice());
+                    else allDollar += Double.parseDouble(priceForPayType.getPrice());
+                    countBOSS++;
+                    break;
+                case "DEBT":
+                    mapDEBT.put(priceForPayType.getCurrencyType(), Double.parseDouble(priceForPayType.getPrice()));
+                    hashMap.put(DEBT, mapDEBT);
+
+                    //UMUMIY BALANSNI HISOBLASH UCHUN
+                    if (priceForPayType.getCurrencyType().equals(SUM.toString()))
+                        allSum += Double.parseDouble(priceForPayType.getPrice());
+                    else allDollar += Double.parseDouble(priceForPayType.getPrice());
+                    countDEBT++;
+                    break;
+            }
+        }
+        //CASH UCHUN
+        if (countCASH > 0) orderPriceByType.add(new OrderPriceDtoForPayType(
+                CASH,
+                hashMap.get(CASH).getOrDefault("SUM", 0D),
+                hashMap.get(CASH).getOrDefault("DOLLAR", 0D)
+        ));
+        if (countCARD > 0) orderPriceByType.add(new OrderPriceDtoForPayType(
+                CARD,
+                hashMap.get(CARD).getOrDefault("SUM", 0D),
+                hashMap.get(CARD).getOrDefault("DOLLAR", 0D)
+        ));
+
+        if (countTRANSFER > 0) orderPriceByType.add(new OrderPriceDtoForPayType(
+                TRANSFER,
+                hashMap.get(TRANSFER).getOrDefault("SUM", 0D),
+                hashMap.get(TRANSFER).getOrDefault("DOLLAR", 0D)
+        ));
+        if (countBOSS > 0) orderPriceByType.add(new OrderPriceDtoForPayType(
+                BOSS,
+                hashMap.get(BOSS).getOrDefault("SUM", 0D),
+                hashMap.get(BOSS).getOrDefault("DOLLAR", 0D)
+        ));
+        if (countDEBT > 0) orderPriceByType.add(new OrderPriceDtoForPayType(
+                DEBT,
+                hashMap.get(DEBT).getOrDefault("SUM", 0D),
+                hashMap.get(DEBT).getOrDefault("DOLLAR", 0D)
+        ));
+
 
         return new OrderPriceDtoForPayTypeRes(orderPriceByType, allSum, allDollar);
     }

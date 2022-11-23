@@ -42,7 +42,8 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Long> {
             "       sum(oi.count*oi.amount) as price from order_item oi " +
             "inner join orders o on o.id = oi.order_id " +
             "where o.warehouse_id = :whId " +
-            "group by currencyType,payType order by payType",
+            "group by payType, currencyType " +
+            "order by currencyType,payType ",
             nativeQuery = true)
     List<OrderPriceForPayType> getAllPriceByType(Long whId);
 }

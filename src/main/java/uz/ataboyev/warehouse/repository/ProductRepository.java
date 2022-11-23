@@ -17,7 +17,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     boolean existsByCategory_Name(String category_name);
 
-    boolean existsByName(String name);
+    boolean existsByNameAndCode(String name, String code);
 
 
     Integer countByIdIn(Collection<Long> id);
