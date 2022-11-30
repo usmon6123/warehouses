@@ -5,6 +5,7 @@ import uz.ataboyev.warehouse.payload.*;
 import uz.ataboyev.warehouse.payload.clientDtos.ClientBalanceResDto;
 import uz.ataboyev.warehouse.payload.clientDtos.ClientHistoryDto;
 import uz.ataboyev.warehouse.payload.clientDtos.ClientReqDto;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientResDto;
 import uz.ataboyev.warehouse.utils.RestConstant;
 
 import javax.validation.Valid;
@@ -20,7 +21,7 @@ public interface ClientController {
     ApiResult<?> getOne(@PathVariable Long clientId);
 
     @GetMapping("/get-all-clients")
-    ApiResult<?> getAllClient();
+    List<ClientResDto> getAllClient();
 
     @GetMapping("/get-clients-for-option")
     List<OptionResDto>getClients();

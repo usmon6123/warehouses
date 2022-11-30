@@ -1,7 +1,6 @@
 package uz.ataboyev.warehouse.service;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Synchronized;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -277,7 +276,7 @@ public class OrderServiceImpl implements OrderService {
 
             for (OrderItem orderItem : orderItemList) {
 
-                Product product = baseService.getProductById(orderItem.getProductId());
+                Product product = baseService.getProductByIdOrElseThrow(orderItem.getProductId());
 
                 databaseCount = product.getCount() + a * orderItem.getCount();
 

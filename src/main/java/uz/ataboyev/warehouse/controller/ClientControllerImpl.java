@@ -7,6 +7,7 @@ import uz.ataboyev.warehouse.payload.clientDtos.ClientBalanceResDto;
 import uz.ataboyev.warehouse.payload.clientDtos.ClientHistoryDto;
 import uz.ataboyev.warehouse.payload.clientDtos.ClientReqDto;
 import uz.ataboyev.warehouse.payload.OptionResDto;
+import uz.ataboyev.warehouse.payload.clientDtos.ClientResDto;
 import uz.ataboyev.warehouse.service.ClientService;
 
 import javax.validation.Valid;
@@ -29,7 +30,7 @@ public class ClientControllerImpl implements ClientController{
     }
 
     @Override
-    public ApiResult<?> getAllClient() {
+    public List<ClientResDto> getAllClient() {
         return clientService.getAllClient();
     }
 

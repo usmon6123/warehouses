@@ -79,8 +79,8 @@ public class BaseService {
         return categoryRepository.existsById(categoryId);
     }
 
-    public Product getProductById(Long productId) {
-        return productRepository.findById(productId).orElseThrow(() -> RestException.restThrow("Product mavjudmas"));
+    public Product getProductByIdOrElseThrow(Long productId) {
+        return productRepository.findById(productId).orElseThrow(() -> RestException.restThrow("so'ralayotgan Mahsulot bazada mavjudmas"));
     }
 
     public void savedProductList(List<Product> productList) {

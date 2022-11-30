@@ -20,7 +20,7 @@ public interface ClientService {
 
     ApiResult<?> getOne(Long clientId);
 
-    ApiResult<?> getAllClient();
+    List<ClientResDto> getAllClient();
 
     ApiResult<?> delete(Long clientId);
 

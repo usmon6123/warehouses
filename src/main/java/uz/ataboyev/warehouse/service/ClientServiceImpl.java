@@ -73,10 +73,10 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
-    public ApiResult<?> getAllClient() {
+    public List<ClientResDto> getAllClient() {
         List<Client> clientList = clientRepository.findAll();
         List<ClientResDto> clientResDtos = mapClients(clientList);
-        return ApiResult.successResponse(clientResDtos);
+        return clientResDtos;
     }
 
     @Override
@@ -120,6 +120,8 @@ public class ClientServiceImpl implements ClientService {
         return mapClients(clientList);
     }
 
+
+
     @Override
     public void checkingClientByIdListOrElseThrow(List<Long> clientIdList) {
         for (Long id : clientIdList) {
@@ -127,8 +129,6 @@ public class ClientServiceImpl implements ClientService {
                 throw new RestException("Bu mijozni biz bazadan topa olmadik", HttpStatus.NOT_FOUND);
         }
     }
-
-
 //-----------------------------HELPER METHOD-------------------------------------
 
     private ClientHistoryDto mapClientHistoryDto(List<OrderItem> clientItems) {

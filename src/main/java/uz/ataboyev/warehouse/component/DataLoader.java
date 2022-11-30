@@ -18,8 +18,6 @@ import uz.ataboyev.warehouse.repository.WarehouseRepository;
 import java.util.ArrayList;
 import java.util.List;
 
-;
-
 @Component
 @RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {

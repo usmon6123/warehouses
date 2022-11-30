@@ -29,6 +29,8 @@ public interface ClientRepository extends JpaRepository<Client,Long> {
             "group by c.name,c.id, c.client_type order by c.name",nativeQuery = true)
     List<ClientBalance> getALLClientBalance(@Param("warehouseId")Long warehouseId);
 
+
+
     Optional<Client> findByClientType(Type clientType);
 
 //    @SqlResultSetMapping(name = "mapClientHistoryDto",

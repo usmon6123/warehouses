@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ApiResult<?> getOne(Long productId) {
 
-        Product product = baseService.getProductById(productId);
+        Product product = baseService.getProductByIdOrElseThrow(productId);
 
         ProductResDto productResDto = ProductResDto.makeDTO(product);
 
@@ -89,8 +89,23 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ApiResult<?> edit(Long productId, ProductReqDto productReqDto) {
-        //todo keyin qilamiz
-        return null;
+        Product oldProduct = baseService.getProductByIdOrElseThrow(productId);
+        Product editedProduct = editProduct(oldProduct,productReqDto);
+        productRepository.save(editedProduct);
+        return ApiResult.successResponse("Mahsulot muvafaqiyatli o'zgartirildi");
+    }
+
+    private Product editProduct(Product oldProduct, ProductReqDto productReqDto) {
+
+        boolean check = productRepository.existsByNameAndCodeAndIdNot(productReqDto.getName(), productReqDto.getCode(), oldProduct.getId());
+
+        if (check)throw RestException.restThrow("Bu nomli va kodli Mahsulot bazada oldindan mavjud");
+
+        oldProduct.setMinCount(productReqDto.getMinCount());
+        oldProduct.setName(productReqDto.getName());
+        oldProduct.setCode(productReqDto.getCode());
+
+        return oldProduct;
     }
 
     @Override
