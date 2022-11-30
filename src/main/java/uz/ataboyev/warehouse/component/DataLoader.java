@@ -25,7 +25,7 @@ public class DataLoader implements CommandLineRunner {
     private final WarehouseRepository warehouseRepository;
     private final CategoryRepository categoryRepository;
     private final ClientRepository clientRepository;
-    public static final String BOSS_NAME = "Бегзод";
+    public static final String BOSS_NAME = "Begzod boss";
 
 
     @Value("${dataLoaderMode}")
@@ -45,14 +45,14 @@ public class DataLoader implements CommandLineRunner {
             Warehouse warehouse1 = new Warehouse("naz Sklad 1", company.getId());
             Warehouse warehouse2 = new Warehouse("Sklad 2", company.getId());
             warehouseRepository.saveAll(List.of(warehouse1, warehouse2));
-            ArrayList<Category> list = new ArrayList<>();
-            list.add(new Category("Moyka 1", warehouse1.getId()));
-            list.add(new Category("Unitaz 1", warehouse1.getId()));
-            list.add(new Category("Mebel 1", warehouse1.getId()));
-            list.add(new Category("Moyka 2", warehouse2.getId()));
-            list.add(new Category("Unitaz 2", warehouse2.getId()));
-            list.add(new Category("Mebel 2", warehouse2.getId()));
-            categoryRepository.saveAll(list);
+//            ArrayList<Category> list = new ArrayList<>();
+//            list.add(new Category("Moyka 1", warehouse1.getId()));
+//            list.add(new Category("Unitaz 1", warehouse1.getId()));
+//            list.add(new Category("Mebel 1", warehouse1.getId()));
+//            list.add(new Category("Moyka 2", warehouse2.getId()));
+//            list.add(new Category("Unitaz 2", warehouse2.getId()));
+//            list.add(new Category("Mebel 2", warehouse2.getId()));
+//            categoryRepository.saveAll(list);
 
             Client client = new Client(Type.BOSS, BOSS_NAME, "+998 (**) *** ** **");
             clientRepository.save(client);

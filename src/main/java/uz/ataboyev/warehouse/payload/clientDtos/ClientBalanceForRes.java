@@ -27,6 +27,6 @@ public class ClientBalanceForRes {
 
     private static boolean isPositive(String summa) {
         double sum = Double.parseDouble(summa);
-        return sum>0;
+        return sum>=0;
     }
 }
