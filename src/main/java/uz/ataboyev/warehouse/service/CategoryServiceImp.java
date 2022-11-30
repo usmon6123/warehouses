@@ -12,7 +12,7 @@ import uz.ataboyev.warehouse.payload.OptionResDto;
 import uz.ataboyev.warehouse.repository.CategoryRepository;
 import uz.ataboyev.warehouse.repository.ProductRepository;
 
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -79,7 +79,12 @@ public class CategoryServiceImp implements CategoryService {
 
         return ApiResult.successResponse("DELETED_CATEGORY");
     }
+
     private List<Category> getCategoriesByWhId(Long wareHouseId) {
         return  categoryRepository.findAllByWarehouseId(wareHouseId);
+
     }
+
+
+
 }

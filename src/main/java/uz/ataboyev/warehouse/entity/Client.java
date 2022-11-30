@@ -31,7 +31,7 @@ public class Client extends AbsLongEntity {
     }
 
     public static Client updateClient(Client client, ClientReqDto clientReqDto) {
-
+        client.setClientType(clientReqDto.getClientType());
         client.setName(clientReqDto.getName());
         client.setPhoneNumber(clientReqDto.getPhoneNumber());
         return client;

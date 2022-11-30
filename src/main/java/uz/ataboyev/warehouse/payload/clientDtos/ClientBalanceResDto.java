@@ -8,7 +8,9 @@ import uz.ataboyev.warehouse.enums.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor@NoArgsConstructor@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class ClientBalanceResDto {
 
     private String clientType;
@@ -20,46 +22,23 @@ public class ClientBalanceResDto {
         ArrayList<ClientBalanceForRes> forOther = new ArrayList<>();
         ArrayList<ClientBalanceForRes> forBoss = new ArrayList<>();
         ArrayList<ClientBalanceResDto> result = new ArrayList<>();
-
+        double sum = 0d, dollar = 0d;
         for (ClientBalance clientBalance : allClientBalance) {
 
             switch (clientBalance.getClientType()) {
 
                 case "COSTUMER":
-                    forCostumer.add(
-                            new ClientBalanceForRes(
-                                    clientBalance.getClientIdLong(),
-                                    clientBalance.getClientName(),
-                                    clientBalance.getBalanceDollar(),
-                                    clientBalance.getBalanceSum()
-                            ));
+                    forCostumer.add(ClientBalanceForRes.make(clientBalance));
                     break;
 
                 case "CONSUMER":
-                    forConsumer.add(
-                            new ClientBalanceForRes(
-                                    clientBalance.getClientIdLong(),
-                                    clientBalance.getClientName(),
-                                    clientBalance.getBalanceDollar(),
-                                    clientBalance.getBalanceSum()
-                            ));
+                    forConsumer.add(ClientBalanceForRes.make(clientBalance));
                     break;
                 case "OTHER":
-                    forOther.add(
-                            new ClientBalanceForRes(
-                                    clientBalance.getClientIdLong(),
-                                    clientBalance.getClientName(),
-                                    clientBalance.getBalanceDollar(),
-                                    clientBalance.getBalanceSum()
-                            ));
+                    forOther.add(ClientBalanceForRes.make(clientBalance));
                     break;
                 case "BOSS":
-                    forBoss.add(new ClientBalanceForRes(
-                            clientBalance.getClientIdLong(),
-                            clientBalance.getClientName(),
-                            clientBalance.getBalanceDollar(),
-                            clientBalance.getBalanceSum()
-                    ));
+                    forBoss.add(ClientBalanceForRes.make(clientBalance));
                     break;
                 default:
                     throw new IllegalStateException("Unexpected value: " + clientBalance.getClientType());
@@ -73,4 +52,5 @@ public class ClientBalanceResDto {
         result.add(new ClientBalanceResDto(Type.BOSS.name(), forBoss));
         return result;
     }
+
 }
