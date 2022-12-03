@@ -20,7 +20,7 @@ public class ClientBalanceForRes {
         return new ClientBalanceForRes(
                 clientBalance.getClientIdLong(),
                 clientBalance.getClientName(),
-                clientBalance.getBalanceDollar(),
+                String.valueOf((float)Double.parseDouble(clientBalance.getBalanceDollar())-100),
                 isPositive(clientBalance.getBalanceDollar()),
                 clientBalance.getBalanceSum(),
                 isPositive(clientBalance.getBalanceSum())
@@ -28,7 +28,7 @@ public class ClientBalanceForRes {
     }
 
     private static boolean isPositive(String summa) {
-        double sum = Double.parseDouble(summa);
+        float sum = (float)Double.parseDouble(summa);
         return sum >= 0;
     }
     private static String helper (String summa) {

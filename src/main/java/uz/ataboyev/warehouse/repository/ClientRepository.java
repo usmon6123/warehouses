@@ -22,8 +22,8 @@ public interface ClientRepository extends JpaRepository<Client,Long> {
     @Query(value = "select  c.client_type as clientType, " +
             "CAST (c.id as varchar) as clientId, "+
             "c.name as clientName, " +
-            "SUM(o.order_price_dollar) as balanceDollar," +
-            "SUM(o.order_price_sum) as balanceSum from client c " +
+            "cast(SUM(o.order_price_dollar) as numeric ) as balanceDollar," +
+            "cast(SUM(o.order_price_sum) as numeric )as balanceSum from client c " +
             "inner join orders o on c.id = o.client_id " +
             "where (o.warehouse_id = :warehouseId) " +
             "group by c.name,c.id, c.client_type order by c.name",nativeQuery = true)
