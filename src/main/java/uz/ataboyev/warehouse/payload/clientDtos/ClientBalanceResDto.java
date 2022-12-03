@@ -22,7 +22,6 @@ public class ClientBalanceResDto {
         ArrayList<ClientBalanceForRes> forOther = new ArrayList<>();
         ArrayList<ClientBalanceForRes> forBoss = new ArrayList<>();
         ArrayList<ClientBalanceResDto> result = new ArrayList<>();
-        double sum = 0d, dollar = 0d;
         for (ClientBalance clientBalance : allClientBalance) {
 
             switch (clientBalance.getClientType()) {

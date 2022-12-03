@@ -4,13 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor@NoArgsConstructor@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class ClientBalanceForRes {
     private Long clientIdLong;
     private String clientName;
-    private Double balanceDollar;
+    private String balanceDollar;
     private boolean isDollarPositive;//summa no'ldan baland bo'lsa true aks holda false
-    private Double balanceSum;
+    private String balanceSum;
     private boolean isSumPositive;//summa no'ldan baland bo'lsa true aks holda false
 
 
@@ -18,15 +20,19 @@ public class ClientBalanceForRes {
         return new ClientBalanceForRes(
                 clientBalance.getClientIdLong(),
                 clientBalance.getClientName(),
-                Double.parseDouble(clientBalance.getBalanceDollar()),
+                clientBalance.getBalanceDollar(),
                 isPositive(clientBalance.getBalanceDollar()),
-                Double.parseDouble(clientBalance.getBalanceSum()),
+                clientBalance.getBalanceSum(),
                 isPositive(clientBalance.getBalanceSum())
         );
     }
 
     private static boolean isPositive(String summa) {
         double sum = Double.parseDouble(summa);
-        return sum>=0;
+        return sum >= 0;
+    }
+    private static String helper (String summa) {
+        double sum = Double.parseDouble(summa);
+        return (sum*100)/100+"";
     }
 }

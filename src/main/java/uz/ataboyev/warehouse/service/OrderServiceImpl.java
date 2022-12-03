@@ -57,7 +57,8 @@ public class OrderServiceImpl implements OrderService {
         return ApiResult.successResponse(result);
     }
 
-    @Override@Transactional
+    @Override
+    @Transactional
     public ApiResult<?> addOrder(SaveOrderDTO orderDTO) {
 
         //warehouse id, product id va client idlarni haqiqatdan bazada mavjudligini soradi
@@ -72,7 +73,8 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItem> orderItemList = OrderItem.makeList(orderItemDtoList, order1.getId(), order1.getType());
 
         //PRODUCTLARNI BAZADAGI SONLARINI O'ZGARTIRIB SAQLAB QO'YDI
-        editProductCount(orderItemList);
+        String isGood = editProductCount(orderItemList);
+        if (!isGood.equals("good")) return ApiResult.errorResponse(isGood);
 
         //SAVDODAGI BARCHA MAXSULOTLARNI NARHINI YIG'IBERADI SUM VA DOLLARNI ADDENNI QILIB
         OrderPriceDto orderPriceDto = calculationOrderPrice(orderItemList);
@@ -269,31 +271,27 @@ public class OrderServiceImpl implements OrderService {
         );
     }
 
-    private void editProductCount(List<OrderItem> orderItemList) {
-        try {
-            double a = 1D, databaseCount;
-            ArrayList<Product> productList = new ArrayList<>();
+    private String editProductCount(List<OrderItem> orderItemList) {
 
-            for (OrderItem orderItem : orderItemList) {
+        double a = 1D, databaseCount;
+        ArrayList<Product> productList = new ArrayList<>();
 
-                Product product = baseService.getProductByIdOrElseThrow(orderItem.getProductId());
+        for (OrderItem orderItem : orderItemList) {
 
-                databaseCount = product.getCount() + a * orderItem.getCount();
+            Product product = baseService.getProductByIdOrElseThrow(orderItem.getProductId());
 
-                //HARIDOR OLMOQCHI BO'LGAN MIQDORDA BAZADA MAHSULOT BORLIGINI TEKSHIRADI
-                if (databaseCount < 0)
-                    throw RestException.restThrow(product.getName() + " mahsulotidan omborda " + product.getCount() + " dona qolgan holos ");
+            databaseCount = product.getCount() + a * orderItem.getCount();
 
-                product.setCount(databaseCount);
+            //HARIDOR OLMOQCHI BO'LGAN MIQDORDA BAZADA MAHSULOT BORLIGINI TEKSHIRADI
+            if (databaseCount < 0)
+                return (product.getName() + " mahsulotidan omborda " + product.getCount() + " dona qolgan holos ");
 
-                productList.add(product);
-            }
-            baseService.savedProductList(productList);
+            product.setCount(databaseCount);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw RestException.restThrow("Mahsulotlarni sonini o'zgartirishda hatolik bo'ldi");
+            productList.add(product);
         }
+        baseService.savedProductList(productList);
+        return "good";
     }
 
     private void checkingOrderDTO(SaveOrderDTO orderDTO) {

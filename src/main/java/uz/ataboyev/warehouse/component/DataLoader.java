@@ -14,9 +14,11 @@ import uz.ataboyev.warehouse.repository.CategoryRepository;
 import uz.ataboyev.warehouse.repository.ClientRepository;
 import uz.ataboyev.warehouse.repository.CompanyRepository;
 import uz.ataboyev.warehouse.repository.WarehouseRepository;
+//import uz.ataboyev.warehouse.service.autoBackup.BackupService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 @Component
 @RequiredArgsConstructor
@@ -26,6 +28,7 @@ public class DataLoader implements CommandLineRunner {
     private final CategoryRepository categoryRepository;
     private final ClientRepository clientRepository;
     public static final String BOSS_NAME = "Begzod boss";
+//    private final BackupService backupService;
 
 
     @Value("${dataLoaderMode}")
@@ -38,6 +41,8 @@ public class DataLoader implements CommandLineRunner {
     }
 
     private void initMethods() {
+
+//        backupService.backup();
 
         if (dataLoaderMode.equals("always")) {
             Company company = new Company("NAZ");
@@ -66,4 +71,13 @@ public class DataLoader implements CommandLineRunner {
     private void saveDefaultUser() {
         // TODO: 05/11/22
     }
+//    public boolean isValid(String s) {
+//        Stack<String> stack = new Stack<>();
+//        ArrayList<Character> characters = new ArrayList<>();
+//        characters.add(s.charAt(0));
+//        int l = s.length();
+//        for (int i = 0; i < l; i++) {
+//            stack.push()
+//        }
+//    }
 }
