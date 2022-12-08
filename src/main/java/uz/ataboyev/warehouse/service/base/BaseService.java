@@ -52,9 +52,6 @@ public class BaseService {
         return companyRepository.findById(id).orElseThrow(() -> RestException.notFound("Company not found"));
     }
 
-    public boolean checkingClientByPhoneNumber(String phoneNumber) {
-        return clientRepository.existsByPhoneNumber(phoneNumber);
-    }
 
     public boolean checkingClientById(Long id) {
         return clientRepository.existsById(id);

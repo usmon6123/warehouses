@@ -40,8 +40,6 @@ public class ClientOrderDto {
     @NotNull(message = "pay_type_enum_not_null")
     private PayTypeEnum payTypeEnum;
 
-//    private String description;
-
     public static ClientOrderDto make(OrderItemByOrderId orderItemByOrderId) {
         return new ClientOrderDto(
                 orderItemByOrderId.getDate(),
@@ -53,6 +51,6 @@ public class ClientOrderDto {
                 CurrencyTypeEnum.valueOf(orderItemByOrderId.getCurrencyTypeEnum()),
                 Double.parseDouble(orderItemByOrderId.getPrice()),
                 PayTypeEnum.valueOf(orderItemByOrderId.getPayType())
-                );
+        );
     }
 }

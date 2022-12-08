@@ -32,7 +32,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public ApiResult<?> add(ClientReqDto clientReqDto) {
 
-        checkingClientByPhoneNumberOrElseThrow(clientReqDto.getPhoneNumber());
+        checkingClientByPhoneNumberOrElseThrow(clientReqDto.getPhoneNumber(),clientReqDto.getName());
 
         Client client = Client.make(clientReqDto);
 
@@ -75,8 +75,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public List<ClientResDto> getAllClient() {
         List<Client> clientList = clientRepository.findAll();
-        List<ClientResDto> clientResDtos = mapClients(clientList);
-        return clientResDtos;
+        return mapClients(clientList);
     }
 
     @Override
@@ -89,9 +88,8 @@ public class ClientServiceImpl implements ClientService {
     public ClientHistoryDto clientHistory(Long clientId) {
 
         List<OrderItem> clientItems = orderItemRepository.findAllByOrder_ClientId(clientId);
-        ClientHistoryDto clientHistoryDto = mapClientHistoryDto(clientItems);
 
-        return clientHistoryDto;
+        return mapClientHistoryDto(clientItems);
     }
 
     @Override
@@ -166,8 +164,8 @@ public class ClientServiceImpl implements ClientService {
         );
     }
 
-    private void checkingClientByPhoneNumberOrElseThrow(String phoneNumber) {
-        if (clientRepository.existsByPhoneNumber(phoneNumber))
+    private void checkingClientByPhoneNumberOrElseThrow(String phoneNumber,String name) {
+        if (clientRepository.existsByPhoneNumberAndName(phoneNumber,name))
             throw RestException.restThrow("Bu raqamli mijoz bazada mavjud", HttpStatus.CONFLICT);
     }
 

@@ -299,8 +299,8 @@ public class OrderServiceImpl implements OrderService {
         if (!baseService.existsWarehouse(orderDTO.getWarehouseId()))
             throw RestException.restThrow("SAVDONI SAQLAMOQCHI BO'LGAN OMBORXONA TOPILMADI", HttpStatus.NOT_FOUND);
 
-        List<Long> productIds = orderDTO.getOrderItemDtoList().stream().map(OrderItemDto::getProductId).collect(Collectors.toList());
-        productService.checkingProductByIdListOrElseThrow(productIds);
+//        List<Long> productIds = orderDTO.getOrderItemDtoList().stream().map(OrderItemDto::getProductId).collect(Collectors.toList());
+//        productService.checkingProductByIdListOrElseThrow(productIds);
 
         Long clientId = orderDTO.getClientId();
         clientService.checkingClientByIdListOrElseThrow(List.of(clientId));

@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface ClientRepository extends JpaRepository<Client,Long> {
     boolean existsByPhoneNumber(String phoneNumber);
-
+    boolean existsByPhoneNumberAndName(String phoneNumber, String name);
     boolean existsByPhoneNumberAndIdNot(String phoneNumber, Long id);
 
     boolean existsById(Long id);
