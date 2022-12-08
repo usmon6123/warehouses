@@ -138,8 +138,8 @@ public class ClientServiceImpl implements ClientService {
             ClientOrderDto clientOrderDto = mapClientOrderDto(clientItem);
 
             if (clientItem.getCurrencyType().equals(CurrencyTypeEnum.SUM))
-                sum += clientOrderDto.getPrice();
-            else dollar += clientOrderDto.getPrice();
+                sum += clientOrderDto.getPrice()!=null?clientOrderDto.getPrice():0D;
+            else dollar += clientOrderDto.getPrice()!=null?clientOrderDto.getPrice():0D;
 
             list.add(clientOrderDto);
         }

@@ -70,6 +70,7 @@ public class OrderItem extends AbsLongEntity {
     public static OrderItem make(OrderItemDto orderItemDto, Long orderId, OrderType orderType) {
         double a = 1D;
         if (orderType.equals(OrderType.EXPENDITURE)) a = minus1;
+
         return new OrderItem(
                 orderId,
                 orderItemDto.getProductId(),

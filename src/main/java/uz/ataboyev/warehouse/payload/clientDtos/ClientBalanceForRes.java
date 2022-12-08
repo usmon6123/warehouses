@@ -20,7 +20,8 @@ public class ClientBalanceForRes {
         return new ClientBalanceForRes(
                 clientBalance.getClientIdLong(),
                 clientBalance.getClientName(),
-                String.valueOf((float)Double.parseDouble(clientBalance.getBalanceDollar())-100),
+                clientBalance.getBalanceDollar(),
+                //                String.valueOf((float)Double.parseDouble(clientBalance.getBalanceDollar())-0),
                 isPositive(clientBalance.getBalanceDollar()),
                 clientBalance.getBalanceSum(),
                 isPositive(clientBalance.getBalanceSum())

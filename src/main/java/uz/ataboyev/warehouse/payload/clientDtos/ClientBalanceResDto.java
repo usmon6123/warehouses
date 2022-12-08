@@ -16,7 +16,7 @@ public class ClientBalanceResDto {
     private String clientType;
     List<ClientBalanceForRes> clientBalanceList;
 
-    public static List<ClientBalanceResDto> makeList(List<ClientBalance> allClientBalance) {
+    public static List<ClientBalanceResDto>  makeList(List<ClientBalance> allClientBalance) {
         ArrayList<ClientBalanceForRes> forCostumer = new ArrayList<>();
         ArrayList<ClientBalanceForRes> forConsumer = new ArrayList<>();
         ArrayList<ClientBalanceForRes> forOther = new ArrayList<>();
